@@ -93,5 +93,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         // Aaand we will finish off here.
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }
