@@ -8,7 +8,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
+    private static final String REDIRECT_URI = "http://com.hp.cliofy/callback";
+    private SpotifyAppRemote mSpotifyAppRemote;
 
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {
