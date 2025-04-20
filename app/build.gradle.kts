@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "hp.cliofy"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hp.cliofy"
@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(files("../libs/spotify-app-remote-release.aar"))
+    implementation("com.google.code.gson:gson:2.6.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
