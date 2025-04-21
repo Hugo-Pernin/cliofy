@@ -40,29 +40,30 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         generalDAO = new GeneralDAO();
-        generalDAO.addObserver(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        generalDAO.addObserver(this);
         generalDAO.connect(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        generalDAO.removeObserver(this);
         generalDAO.disconnect();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void pauseResumeClick(View v) {
-        if (generalDAO.isPaused()) {
-            generalDAO.resume();
-        }
-        else {
-            generalDAO.pause();
-        }
+        generalDAO.pauseResume();
     }
 
     private void skipPreviousClick(View v) {
@@ -74,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     }
 
     private void shuffleClick(View v) {
-        if (generalDAO.isShuffling()) {
-            generalDAO.disableShuffle();
+        if (shuffleSwitch.isChecked()) {
+            generalDAO.enableShuffle();
         }
         else {
-            generalDAO.enableShuffle();
+            generalDAO.disableShuffle();
         }
     }
 
