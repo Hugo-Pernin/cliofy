@@ -25,7 +25,6 @@ public class GeneralDAO extends Observable {
 
     private boolean isPaused = false;
     private boolean isShuffling = false;
-    private ImageUri imageUri;
 
     public boolean isPaused() {
         return isPaused;
@@ -101,7 +100,6 @@ public class GeneralDAO extends Observable {
     private void refreshPlayerState(PlayerState playerState) {
         isPaused = playerState.isPaused;
         isShuffling = playerState.playbackOptions.isShuffling;
-        imageUri = playerState.track.imageUri;
         final Track track = playerState.track;
         if (track != null) {
             Log.d("MainActivity", "Nom : " + track.name);
