@@ -3,6 +3,7 @@ package hp.cliofy;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -47,7 +48,8 @@ public class GeneralDAO extends Observable {
                     @Override
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
+                        Toast toast = Toast.makeText(context, "Connecté", Toast.LENGTH_SHORT);
+                        toast.show();
                         resume();
                         mSpotifyAppRemote.getPlayerApi()
                                 .subscribeToPlayerState()
@@ -58,7 +60,8 @@ public class GeneralDAO extends Observable {
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                        Toast toast = Toast.makeText(context, "Erreur lors de la connexion : " + throwable.getMessage(), Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 });
     }
