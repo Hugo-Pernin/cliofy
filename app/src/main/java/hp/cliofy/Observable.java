@@ -2,10 +2,11 @@ package hp.cliofy;
 
 import com.spotify.protocol.types.Track;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Observable {
-    private List<IObserver> observers;
+    private List<IObserver> observers = new ArrayList<IObserver>();
 
     public void addObserver(IObserver observer) {
         observers.add(observer);
