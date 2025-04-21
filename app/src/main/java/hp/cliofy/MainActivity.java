@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.spotify.protocol.types.Track;
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     private Button skipPreviousButton;
     private Button skipNextButton;
     private Switch shuffleSwitch;
+    private TextView informations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         skipPreviousButton = findViewById(R.id.skipPreviousButton);
         skipNextButton = findViewById(R.id.skipNextButton);
         shuffleSwitch = findViewById(R.id.shuffleSwitch);
+        informations = findViewById(R.id.informations);
         pauseResumeButton.setOnClickListener(this::pauseResumeClick);
         skipPreviousButton.setOnClickListener(this::skipPreviousClick);
         skipNextButton.setOnClickListener(this::skipNextClick);
@@ -92,6 +95,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
 
     @Override
     public void trackChange(Track track) {
-
+        informations.setText(
+                track.name + "\n" +
+                track.artist.name + "\n" +
+                track.album.name
+        );
     }
 }
