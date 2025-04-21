@@ -9,101 +9,39 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
-
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
-    private static final String REDIRECT_URI = "http://com.hp.cliofy/callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
-
+    private GeneralDAO generalDAO;
     private Button pauseButton;
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         pauseButton = findViewById(R.id.pauseButton);
         pauseButton.setOnClickListener(this::pause);
+
+        generalDAO = new GeneralDAO();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // We will start writing our code here.
-        // Set the connection parameters
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                        connected();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
-    }
-
-    private void connected() {
-        // Then we will write some more code here.
-        // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-        // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
+        generalDAO.connect(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // Aaand we will finish off here.
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        generalDAO.disconnect();
     }
 
     private void pause(View v) {
-        mSpotifyAppRemote.getPlayerApi().pause();
+        generalDAO.pause();
     }
 }
