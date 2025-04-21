@@ -6,6 +6,7 @@ import android.util.Log;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Album;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
@@ -56,6 +57,14 @@ public class GeneralDAO {
         mSpotifyAppRemote.getPlayerApi().resume();
     }
 
+    public void skipPrevious() {
+        mSpotifyAppRemote.getPlayerApi().skipPrevious();
+    }
+
+    public void skipNext() {
+        mSpotifyAppRemote.getPlayerApi().skipNext();
+    }
+
     public void play(String uri) {
         mSpotifyAppRemote.getPlayerApi().play(uri);
     }
@@ -63,7 +72,14 @@ public class GeneralDAO {
     private void refreshPlayerState(PlayerState playerState) {
         final Track track = playerState.track;
         if (track != null) {
-            Log.d("MainActivity", track.name + " by " + track.artist.name);
+            Log.d("MainActivity", "Nom : " + track.name);
+            Log.d("MainActivity", "Artiste : " + track.artist.name);
+            Log.d("MainActivity", "Album : " + track.album.name);
+            Log.d("MainActivity", "Uri de l'image : " + track.imageUri.raw);
+            //Log.d("MainActivity", "Position : " + playerState.playbackPosition);
+            Log.d("MainActivity", "Durée totale : " + track.duration);
+            Log.d("MainActivity", "Est en pause : " + playerState.isPaused);
+            Log.d("MainActivity", "Est en aléatoire : " + playerState.playbackOptions.isShuffling);
         }
     }
 }
