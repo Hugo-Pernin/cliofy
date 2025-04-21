@@ -17,11 +17,16 @@ import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
+import android.view.View;
+import android.widget.Button;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
     private static final String REDIRECT_URI = "http://com.hp.cliofy/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
+
+    private Button pauseButton;
 
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pauseButton = findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener(this::pause);
     }
 
     @Override
@@ -94,5 +101,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         // Aaand we will finish off here.
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+    }
+
+    private void pause(View v) {
+        mSpotifyAppRemote.getPlayerApi().pause();
     }
 }
