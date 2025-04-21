@@ -1,5 +1,6 @@
 package hp.cliofy;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     private Button skipNextButton;
     private Switch shuffleSwitch;
     private TextView informations;
+    private ImageView albumCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         skipNextButton = findViewById(R.id.skipNextButton);
         shuffleSwitch = findViewById(R.id.shuffleSwitch);
         informations = findViewById(R.id.informations);
+        albumCover = findViewById(R.id.albumCover);
         pauseResumeButton.setOnClickListener(this::pauseResumeClick);
         skipPreviousButton.setOnClickListener(this::skipPreviousClick);
         skipNextButton.setOnClickListener(this::skipNextClick);
@@ -100,5 +104,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 track.artist.name + "\n" +
                 track.album.name
         );
+    }
+
+    @Override
+    public void imageChange(Bitmap bitmap) {
+        albumCover.setImageBitmap(bitmap);
     }
 }

@@ -1,14 +1,20 @@
 package hp.cliofy;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.Album;
+import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
+
+import java.util.concurrent.TimeUnit;
 
 public class GeneralDAO extends Observable {
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
@@ -18,6 +24,7 @@ public class GeneralDAO extends Observable {
 
     private boolean isPaused = false;
     private boolean isShuffling = false;
+    private ImageUri imageUri;
 
     public boolean isPaused() {
         return isPaused;
@@ -91,6 +98,7 @@ public class GeneralDAO extends Observable {
     private void refreshPlayerState(PlayerState playerState) {
         isPaused = playerState.isPaused;
         isShuffling = playerState.playbackOptions.isShuffling;
+        imageUri = playerState.track.imageUri;
         final Track track = playerState.track;
         if (track != null) {
             Log.d("MainActivity", "Nom : " + track.name);
@@ -106,5 +114,13 @@ public class GeneralDAO extends Observable {
         notifyPauseChange(isPaused);
         notifyShuffleChange(isShuffling);
         notifyTrackChange(track);
+        loadImage(track.imageUri);
+    }
+
+    private void loadImage(ImageUri imageUri) {
+        mSpotifyAppRemote
+                .getImagesApi()
+                .getImage(imageUri, Image.Dimension.LARGE)
+                .setResultCallback(this::notifyImageChange);
     }
 }

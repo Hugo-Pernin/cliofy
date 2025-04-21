@@ -1,5 +1,7 @@
 package hp.cliofy;
 
+import android.graphics.Bitmap;
+
 import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
@@ -31,6 +33,12 @@ public abstract class Observable {
     protected void notifyTrackChange(Track track) {
         for (IObserver observer : observers) {
             observer.trackChange(track);
+        }
+    }
+
+    protected void notifyImageChange(Bitmap bitmap) {
+        for (IObserver observer : observers) {
+            observer.imageChange(bitmap);
         }
     }
 }
