@@ -10,11 +10,22 @@ import com.spotify.protocol.types.Album;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
-public class GeneralDAO {
+public class GeneralDAO extends Observable {
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
     private final String REDIRECT_URI = "http://com.hp.cliofy/callback";
 
     private SpotifyAppRemote mSpotifyAppRemote;
+
+    private boolean isPaused = false;
+    private boolean isShuffling = false;
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public boolean isShuffling() {
+        return isShuffling;
+    }
 
     public void connect(Context context) {
         ConnectionParams connectionParams =
@@ -69,7 +80,17 @@ public class GeneralDAO {
         mSpotifyAppRemote.getPlayerApi().play(uri);
     }
 
+    public void disableShuffle() {
+        mSpotifyAppRemote.getPlayerApi().setShuffle(false);
+    }
+
+    public void enableShuffle() {
+        mSpotifyAppRemote.getPlayerApi().setShuffle(true);
+    }
+
     private void refreshPlayerState(PlayerState playerState) {
+        isPaused = playerState.isPaused;
+        isShuffling = playerState.playbackOptions.isShuffling;
         final Track track = playerState.track;
         if (track != null) {
             Log.d("MainActivity", "Nom : " + track.name);
@@ -81,5 +102,9 @@ public class GeneralDAO {
             Log.d("MainActivity", "Est en pause : " + playerState.isPaused);
             Log.d("MainActivity", "Est en aléatoire : " + playerState.playbackOptions.isShuffling);
         }
+
+        notifyPauseChange(isPaused);
+        notifyShuffleChange(isShuffling);
+        notifyTrackChange(track);
     }
 }

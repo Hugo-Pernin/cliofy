@@ -1,37 +1,39 @@
 package hp.cliofy;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Switch;
 
-public class MainActivity extends AppCompatActivity {
+import com.spotify.protocol.types.Track;
+
+public class MainActivity extends AppCompatActivity implements IObserver {
     private GeneralDAO generalDAO;
-    private Button pauseButton;
+    private Button pauseResumeButton;
     private Button skipPreviousButton;
     private Button skipNextButton;
+    private Switch shuffleSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        pauseButton = findViewById(R.id.pauseButton);
+        pauseResumeButton = findViewById(R.id.pauseResumeButton);
         skipPreviousButton = findViewById(R.id.skipPreviousButton);
         skipNextButton = findViewById(R.id.skipNextButton);
-        pauseButton.setOnClickListener(this::pause);
-        skipPreviousButton.setOnClickListener(this::skipPrevious);
-        skipNextButton.setOnClickListener(this::skipNext);
+        shuffleSwitch = findViewById(R.id.shuffleSwitch);
+        pauseResumeButton.setOnClickListener(this::pauseResumeClick);
+        skipPreviousButton.setOnClickListener(this::skipPreviousClick);
+        skipNextButton.setOnClickListener(this::skipNextClick);
+        shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         generalDAO = new GeneralDAO();
+        generalDAO.addObserver(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -47,15 +49,49 @@ public class MainActivity extends AppCompatActivity {
         generalDAO.disconnect();
     }
 
-    private void pause(View v) {
-        generalDAO.pause();
+    private void pauseResumeClick(View v) {
+        if (generalDAO.isPaused()) {
+            generalDAO.resume();
+        }
+        else {
+            generalDAO.pause();
+        }
     }
 
-    private void skipPrevious(View v) {
+    private void skipPreviousClick(View v) {
         generalDAO.skipPrevious();
     }
 
-    private void skipNext(View v) {
+    private void skipNextClick(View v) {
         generalDAO.skipNext();
+    }
+
+    private void shuffleClick(View v) {
+        if (generalDAO.isShuffling()) {
+            generalDAO.disableShuffle();
+        }
+        else {
+            generalDAO.enableShuffle();
+        }
+    }
+
+    @Override
+    public void pauseChange(boolean isPaused) {
+        if (isPaused) {
+            pauseResumeButton.setText("Resume");
+        }
+        else {
+            pauseResumeButton.setText("Pause");
+        }
+    }
+
+    @Override
+    public void shuffleChange(boolean isShuffling) {
+        shuffleSwitch.setChecked(isShuffling);
+    }
+
+    @Override
+    public void trackChange(Track track) {
+
     }
 }

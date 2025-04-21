@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/pauseButton"
+        android:id="@+id/pauseResumeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pause"
@@ -40,5 +40,13 @@
         android:text="Next track"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/shuffleSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shuffle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/skipPreviousButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
