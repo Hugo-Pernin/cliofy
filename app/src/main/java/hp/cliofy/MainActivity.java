@@ -1,16 +1,20 @@
 package hp.cliofy;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spotify.protocol.types.Track;
 
@@ -40,26 +44,46 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         generalDAO = new GeneralDAO();
+        generalDAO.addObserver(this);
+        generalDAO.connect(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        generalDAO.addObserver(this);
-        generalDAO.connect(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        generalDAO.removeObserver(this);
-        generalDAO.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        generalDAO.removeObserver(this);
+        generalDAO.disconnect();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        Uri uri = intent.getData();
+        if (uri != null && uri.toString().startsWith("com.hp.cliofy://callback")) {
+            String authorizationCode = uri.getQueryParameter("code");
+            if (authorizationCode != null) {
+                Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
+                // Code à mettre ici
+            }
+            else {
+                Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            Toast.makeText(this, "Erreur lors de la connexion à l'API : mauvaise redirection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void pauseResumeClick(View v) {

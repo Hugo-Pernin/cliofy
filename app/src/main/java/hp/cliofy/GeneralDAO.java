@@ -4,9 +4,15 @@ import android.content.Context;
 
 public class GeneralDAO extends Observable {
     private AndroidSDKDAO androidSDKDAO = new AndroidSDKDAO();
+    private WebAPIDAO webAPIDAO = new WebAPIDAO();
 
     public void connect(Context context) {
+        connectWebAPI(context);
         androidSDKDAO.connect(context, this);
+    }
+
+    public void connectWebAPI(Context context) {
+        webAPIDAO.connect(context);
     }
 
     public void disconnect() {

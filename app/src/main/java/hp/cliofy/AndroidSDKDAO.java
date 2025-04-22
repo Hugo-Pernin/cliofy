@@ -29,8 +29,7 @@ public class AndroidSDKDAO {
                     @Override
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         AndroidSDKDAO.this.spotifyAppRemote = spotifyAppRemote;
-                        Toast toast = Toast.makeText(context, "Connecté", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(context, "Connecté au SDK", Toast.LENGTH_SHORT).show();
                         //resume();
                         AndroidSDKDAO.this.spotifyAppRemote.getPlayerApi()
                                 .subscribeToPlayerState()
@@ -39,8 +38,7 @@ public class AndroidSDKDAO {
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Toast toast = Toast.makeText(context, "Erreur lors de la connexion : " + throwable.getMessage(), Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(context, "Erreur lors de la connexion au SDK : " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
