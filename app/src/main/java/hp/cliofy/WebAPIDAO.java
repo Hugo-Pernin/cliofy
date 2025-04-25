@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -25,15 +26,17 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WebAPIDAO {
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
     private final String REDIRECT_URI = "com.hp.cliofy://callback";
-    private final String SCOPE = "user-read-private user-read-email";
+    private final String SCOPE = "user-read-private user-read-email playlist-read-private";
     private String codeVerifier;
     private String authorizationCode;
     private String accessToken;
@@ -135,7 +138,6 @@ public class WebAPIDAO {
                         JSONObject json = new JSONObject(rd.readLine());
                         accessToken = json.get("access_token").toString();
                         refreshToken = json.get("refresh_token").toString();
-                        //getPlaylistsList();
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -150,30 +152,68 @@ public class WebAPIDAO {
         });
 
         thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    /*public void getPlaylistsList() {
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL("https://api.spotify.com/v1/me/playlists");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-            urlConnection.setRequestMethod("GET");
+    public List<Playlist> getPlaylistsList() {
+        List<Playlist> list = new ArrayList<Playlist>();
 
-            int code = urlConnection.getResponseCode();
-            if (code !=  200) {
-                throw new IOException("Invalid response from server: " + code);
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection urlConnection = null;
+                    try {
+                        URL url = new URL("https://api.spotify.com/v1/me/playlists");
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                        urlConnection.setRequestMethod("GET");
+
+                        int code = urlConnection.getResponseCode();
+                        if (code !=  200) {
+                            throw new IOException("Invalid response from server: " + code);
+                        }
+
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String line;
+                        while ((line = rd.readLine()) != null) {
+                            JSONObject json = new JSONObject(line);
+                            JSONArray array = json.getJSONArray("items");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+                                String name = object.get("name").toString();
+                                String uri = object.get("uri").toString();
+                                Playlist playlist = new Playlist(name, uri);
+                                list.add(playlist);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        });
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            JSONObject json = new JSONObject(rd.readLine());
-            String s = "";
-        } catch (Exception e) {
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            return list;
         }
-    }*/
+    }
 }

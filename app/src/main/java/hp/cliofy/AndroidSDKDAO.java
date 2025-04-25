@@ -30,7 +30,6 @@ public class AndroidSDKDAO {
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         AndroidSDKDAO.this.spotifyAppRemote = spotifyAppRemote;
                         Toast.makeText(context, "Connecté au SDK", Toast.LENGTH_SHORT).show();
-                        //resume();
                         AndroidSDKDAO.this.spotifyAppRemote.getPlayerApi()
                                 .subscribeToPlayerState()
                                 .setEventCallback(playerState -> refreshPlayerState(playerState, generalDAO));

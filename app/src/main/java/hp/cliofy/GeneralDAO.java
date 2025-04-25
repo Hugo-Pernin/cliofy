@@ -2,6 +2,8 @@ package hp.cliofy;
 
 import android.content.Context;
 
+import java.util.List;
+
 public class GeneralDAO extends Observable {
     private AndroidSDKDAO androidSDKDAO = new AndroidSDKDAO();
     private WebAPIDAO webAPIDAO = new WebAPIDAO();
@@ -41,5 +43,9 @@ public class GeneralDAO extends Observable {
 
     public void enableShuffle() {
         androidSDKDAO.enableShuffle();
+    }
+
+    public List<Playlist> getPlaylistsList() {
+        return webAPIDAO.getPlaylistsList();
     }
 }

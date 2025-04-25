@@ -10,13 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spotify.protocol.types.Track;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IObserver {
     private GeneralDAO generalDAO;
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     private Switch shuffleSwitch;
     private TextView informations;
     private ImageView albumCover;
+    private ListView playlistsListView;
+    private List<Playlist> playlistsList;
+    private ArrayAdapter<Playlist> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +47,25 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleSwitch = findViewById(R.id.shuffleSwitch);
         informations = findViewById(R.id.informations);
         albumCover = findViewById(R.id.albumCover);
+        playlistsListView = findViewById(R.id.playlistsListView);
         pauseResumeButton.setOnClickListener(this::pauseResumeClick);
         skipPreviousButton.setOnClickListener(this::skipPreviousClick);
         skipNextButton.setOnClickListener(this::skipNextClick);
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
+        playlistsList = new ArrayList<Playlist>();
+        adapter = new ArrayAdapter<Playlist>(this, android.R.layout.simple_list_item_1, playlistsList);
+        playlistsListView.setAdapter(adapter);
+        playlistsListView.setOnItemClickListener(this::playPlaylist);
+
         generalDAO = new GeneralDAO();
         generalDAO.addObserver(this);
         generalDAO.connect(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private void playPlaylist(AdapterView<?> adapterView, View view, int i, long l) {
+        generalDAO.play(playlistsList.get(i).getUri());
     }
 
     @Override
@@ -76,6 +95,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
                 generalDAO.storeAuthorizationCode(authorizationCode);
+                List<Playlist> list = generalDAO.getPlaylistsList();
+                for (Playlist playlist : list) {
+                    playlistsList.add(playlist);
+                }
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();
