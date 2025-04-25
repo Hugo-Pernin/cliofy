@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         skipNextButton.setOnClickListener(this::skipNextClick);
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
-        playlistsList = new ArrayList<Playlist>();
-        adapter = new ArrayAdapter<Playlist>(this, android.R.layout.simple_list_item_1, playlistsList);
+        playlistsList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
         playlistsListView.setAdapter(adapter);
         playlistsListView.setOnItemClickListener(this::playPlaylist);
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
 
     // TODO commenter
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         Uri uri = intent.getData();
@@ -149,9 +149,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
                 generalDAO.storeAuthorizationCode(authorizationCode);
                 List<Playlist> list = generalDAO.getPlaylistsList();
-                for (Playlist playlist : list) {
-                    playlistsList.add(playlist);
-                }
+                playlistsList.addAll(list);
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();
@@ -199,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         }
     }
 
+    // TODO utiliser les ressources
     @Override
     public void pauseChange(boolean isPaused) {
         if (isPaused) {

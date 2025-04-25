@@ -77,8 +77,7 @@ public class WebAPIDAO {
         final byte[] HASHED = sha256(codeVerifier);
         final String CODE_CHALLENGE = base64encode(HASHED);
 
-        HttpURLConnection httpURLConnection = null;
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         parameters.put("client_id", CLIENT_ID);
         parameters.put("response_type", "code");
         parameters.put("redirect_uri", REDIRECT_URI);
@@ -86,13 +85,16 @@ public class WebAPIDAO {
         parameters.put("code_challenge_method", "S256");
         parameters.put("code_challenge", CODE_CHALLENGE);
 
-        String url = "https://accounts.spotify.com/authorize?";
+        StringBuilder url = new StringBuilder("https://accounts.spotify.com/authorize?");
         for (String key : parameters.keySet()) {
-            url += key + "=" + parameters.get(key) + "&";
+            url.append(key);
+            url.append("=");
+            url.append(parameters.get(key));
+            url.append("&");
         }
-        url = url.substring(0, url.length() - 1); // Delete last '&'
+        url.setLength(url.length() - 1); // Delete last '&'
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString()));
         startActivity(context, browserIntent, null);
     }
 
@@ -181,7 +183,7 @@ public class WebAPIDAO {
                         urlConnection.setChunkedStreamingMode(0);
 
                         OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
                         writer.write(postData);
                         writer.flush();
 
@@ -222,7 +224,7 @@ public class WebAPIDAO {
      * TODO commenter
      */
     public List<Playlist> getPlaylistsList() {
-        List<Playlist> list = new ArrayList<Playlist>();
+        List<Playlist> list = new ArrayList<>();
 
         Thread thread = new Thread(new Runnable() {
 
@@ -273,8 +275,8 @@ public class WebAPIDAO {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            return list;
         }
+
+        return list;
     }
 }

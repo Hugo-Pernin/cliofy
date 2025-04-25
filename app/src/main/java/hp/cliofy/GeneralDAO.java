@@ -11,12 +11,20 @@ public class GeneralDAO extends Observable {
     /**
      * DAO communicating with the Spotify Android app
      */
-    private AndroidSDKDAO androidSDKDAO = new AndroidSDKDAO();
+    private final AndroidSDKDAO androidSDKDAO;
 
     /**
      * DAO communicating with the Spotify Web API
      */
-    private WebAPIDAO webAPIDAO = new WebAPIDAO();
+    private final WebAPIDAO webAPIDAO;
+
+    /**
+     * Creates a general DAO
+     */
+    public GeneralDAO() {
+        androidSDKDAO = new AndroidSDKDAO();
+        webAPIDAO = new WebAPIDAO();
+    }
 
     /**
      * Connects all the DAOs

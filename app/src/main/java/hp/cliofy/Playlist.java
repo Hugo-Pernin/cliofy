@@ -1,5 +1,7 @@
 package hp.cliofy;
 
+import androidx.annotation.NonNull;
+
 /**
  * A simplified playlist
  */
@@ -7,12 +9,12 @@ public class Playlist {
     /**
      * Name of the playlist
      */
-    private String name;
+    private final String name;
 
     /**
      * uri of the playlist
      */
-    private String uri;
+    private final String uri;
 
     /**
      * Returns the uri of the playlist
@@ -32,6 +34,7 @@ public class Playlist {
         this.uri = uri;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return this.name;

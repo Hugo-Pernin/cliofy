@@ -14,7 +14,14 @@ public abstract class Observable {
     /**
      * List containing all the observers
      */
-    private List<IObserver> observers = new ArrayList<IObserver>();
+    private final List<IObserver> observers;
+
+    /**
+     * Creates a new observable
+     */
+    public Observable() {
+        observers = new ArrayList<>();
+    }
 
     /**
      * Adds an observer to the observers list
