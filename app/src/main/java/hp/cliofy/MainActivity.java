@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             String authorizationCode = uri.getQueryParameter("code");
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
-                // Code à mettre ici
+                generalDAO.storeAuthorizationCode(authorizationCode);
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();

@@ -7,12 +7,12 @@ public class GeneralDAO extends Observable {
     private WebAPIDAO webAPIDAO = new WebAPIDAO();
 
     public void connect(Context context) {
-        connectWebAPI(context);
+        webAPIDAO.connect(context);
         androidSDKDAO.connect(context, this);
     }
 
-    public void connectWebAPI(Context context) {
-        webAPIDAO.connect(context);
+    public void storeAuthorizationCode(String authorizationCode) {
+        webAPIDAO.storeAuthorizationCode(authorizationCode);
     }
 
     public void disconnect() {
