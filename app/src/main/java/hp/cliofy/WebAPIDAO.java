@@ -5,9 +5,6 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
-
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -28,20 +24,54 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * DAO communicating with the Spotify Web API
+ */
 public class WebAPIDAO {
+    /**
+     * Client ID found in the Spotify developer dashboard
+     */
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
+
+    /**
+     * Redirect URL entered in the Spotify developer dashboard
+     */
     private final String REDIRECT_URI = "com.hp.cliofy://callback";
+
+    /**
+     * Permissions given to the DAO
+     */
     private final String SCOPE = "user-read-private user-read-email playlist-read-private";
+
+    /**
+     * Code verifier used to get the access token
+     */
     private String codeVerifier;
+
+    /**
+     * Authorization code used to get the access token
+     */
     private String authorizationCode;
+
+    /**
+     * Access token used to make requests with the API
+     */
     private String accessToken;
+
+    /**
+     * Refresh token used to get a new access token without asking user's authorization again (if the authorization token didn't expire)
+     */
     private String refreshToken;
 
+    /**
+     * Connects the DAO to the Spotify Web API
+     * @param context
+     * TODO commenter
+     */
     public void connect(Context context) {
         codeVerifier = generateRandomString(64);
         final byte[] HASHED = sha256(codeVerifier);
@@ -66,6 +96,12 @@ public class WebAPIDAO {
         startActivity(context, browserIntent, null);
     }
 
+    /**
+     * Generates a random string
+     * @param length desired length of the string
+     * @return a string containing the desired number of random characters (can be uppercase letters, lowercase letters or digits)
+     * TODO commenter
+     */
     private String generateRandomString(int length) {
         final String POSSIBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom secureRandom = new SecureRandom();
@@ -79,6 +115,12 @@ public class WebAPIDAO {
         return result.toString();
     }
 
+    /**
+     * Hashes a text using the SHA256 algorithm
+     * @param text text to hash
+     * @return hashed text using the SHA256 algorithm, converted to a table of bytes
+     * TODO commenter
+     */
     private byte[] sha256(String text) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -88,6 +130,12 @@ public class WebAPIDAO {
         }
     }
 
+    /**
+     * Encodes a table of bytes in base 64
+     * @param input table of bytes to encode
+     * @return encoded table of bytes in base 64, converted to a string
+     * TODO commenter
+     */
     private String base64encode(byte[] input) {
         String result = Base64.getEncoder().encodeToString(input);
         result = result.replace("=", "");
@@ -96,11 +144,19 @@ public class WebAPIDAO {
         return result;
     }
 
+    /**
+     * Stores the authorization code
+     * @param authorizationCode authorization code to store
+     */
     public void storeAuthorizationCode(String authorizationCode) {
         this.authorizationCode = authorizationCode;
-        requestAccessToken();
+        requestAccessToken(); // TODO why here?
     }
 
+    /**
+     * Requests the access token
+     * TODO commenter
+     */
     private void requestAccessToken() {
         Thread thread = new Thread(new Runnable() {
 
@@ -160,6 +216,11 @@ public class WebAPIDAO {
         }
     }
 
+    /**
+     * Gets the playlists list of the current user
+     * @return playlists list of the current user
+     * TODO commenter
+     */
     public List<Playlist> getPlaylistsList() {
         List<Playlist> list = new ArrayList<Playlist>();
 

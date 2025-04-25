@@ -24,18 +24,61 @@ import com.spotify.protocol.types.Track;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main activity of the project
+ */
 public class MainActivity extends AppCompatActivity implements IObserver {
+    /**
+     * General DAO communicating with the different Spotify APIs
+     */
     private GeneralDAO generalDAO;
+
+    /**
+     * pause/resume button
+     */
     private Button pauseResumeButton;
+
+    /**
+     * skip to the previous track button
+     */
     private Button skipPreviousButton;
+
+    /**
+     * skip to the next track button
+     */
     private Button skipNextButton;
+
+    /**
+     * shuffling mode switch
+     */
     private Switch shuffleSwitch;
+
+    /**
+     * Informations of the current track
+     */
     private TextView informations;
+
+    /**
+     * current album cover
+     */
     private ImageView albumCover;
+
+    /**
+     * listview contenant les playlists (vue)
+     */
     private ListView playlistsListView;
+
+    /**
+     * liste contenant les playlists (modèle)
+     */
     private List<Playlist> playlistsList;
+
+    /**
+     * TODO expliquer
+     */
     private ArrayAdapter<Playlist> adapter;
 
+    // TODO commenter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +107,13 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    /**
+     * Plays a playlist depending on its index in the list
+     * @param adapterView TODO expliquer
+     * @param view TODO expliquer
+     * @param i index of the playlist in the list
+     * @param l TODO expliquer
+     */
     private void playPlaylist(AdapterView<?> adapterView, View view, int i, long l) {
         generalDAO.play(playlistsList.get(i).getUri());
     }
@@ -73,11 +123,13 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         super.onStart();
     }
 
+    // TODO enlever ?
     @Override
     protected void onStop() {
         super.onStop();
     }
 
+    // TODO enlever ?
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -85,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         generalDAO.disconnect();
     }
 
+    // TODO commenter
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -109,18 +162,34 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         }
     }
 
+    /**
+     * Function called when the pause/resume button is clicked
+     * @param v TODO expliquer
+     */
     private void pauseResumeClick(View v) {
         generalDAO.pauseResume();
     }
 
+    /**
+     * Function called when the skip to previous track button is clicked
+     * @param v TODO expliquer
+     */
     private void skipPreviousClick(View v) {
         generalDAO.skipPrevious();
     }
 
+    /**
+     * Function called when the skip to next track is clicked
+     * @param v TODO expliquer
+     */
     private void skipNextClick(View v) {
         generalDAO.skipNext();
     }
 
+    /**
+     * Function called when the shuffle switch is clicked
+     * @param v TODO expliquer
+     */
     private void shuffleClick(View v) {
         if (shuffleSwitch.isChecked()) {
             generalDAO.enableShuffle();
