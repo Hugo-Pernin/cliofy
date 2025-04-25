@@ -27,29 +27,31 @@
 
     <Button
         android:id="@+id/skipNextButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:text="Next track"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pauseResumeButton" />
 
     <Switch
         android:id="@+id/shuffleSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Shuffle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skipPreviousButton" />
+        app:layout_constraintBottom_toTopOf="@+id/skipNextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/informations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pauseResumeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/skipNextButton" />
 
     <ImageView
         android:id="@+id/albumCover"
