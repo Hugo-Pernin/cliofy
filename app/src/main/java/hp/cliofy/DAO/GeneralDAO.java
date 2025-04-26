@@ -22,12 +22,25 @@ public class GeneralDAO extends Observable {
      */
     private final WebAPIDAO webAPIDAO;
 
+    private static GeneralDAO instance;
+
     /**
      * Creates a general DAO
      */
-    public GeneralDAO() {
+    private GeneralDAO() {
         androidSDKDAO = new AndroidSDKDAO();
         webAPIDAO = new WebAPIDAO();
+    }
+
+    /**
+     * Gets the singleton instance
+     * @return the singleton instance
+     */
+    public static GeneralDAO getInstance() {
+        if (instance == null) {
+            instance = new GeneralDAO();
+        }
+        return instance;
     }
 
     /**
