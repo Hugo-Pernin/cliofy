@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 generalDAO.storeAuthorizationCode(authorizationCode);
                 List<Playlist> list = generalDAO.getPlaylistsList();
                 playlistsList.addAll(list);
+                refreshListViewHeight(playlistsListView);
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();
@@ -158,6 +160,24 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         else {
             Toast.makeText(this, "Erreur lors de la connexion à l'API : mauvaise redirection", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Refreshes a ListView's height based on its children
+     * @param listView ListView to refresh
+     */
+    private void refreshListViewHeight(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(
+                    View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            );
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        listView.getLayoutParams().height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
     }
 
     /**
