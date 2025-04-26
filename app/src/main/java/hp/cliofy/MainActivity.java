@@ -25,6 +25,10 @@ import com.spotify.protocol.types.Track;
 import java.util.ArrayList;
 import java.util.List;
 
+import hp.cliofy.DAO.GeneralDAO;
+import hp.cliofy.Item.Artist;
+import hp.cliofy.Item.Playlist;
+
 /**
  * Main activity of the project
  */

@@ -1,8 +1,12 @@
-package hp.cliofy;
+package hp.cliofy.DAO;
 
 import android.content.Context;
 
 import java.util.List;
+
+import hp.cliofy.Item.Artist;
+import hp.cliofy.Item.Playlist;
+import hp.cliofy.Observable;
 
 /**
  * General DAO that serves as a facade to call other DAOs depending on the called function

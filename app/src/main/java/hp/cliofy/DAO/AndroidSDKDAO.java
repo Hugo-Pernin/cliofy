@@ -1,4 +1,4 @@
-package hp.cliofy;
+package hp.cliofy.DAO;
 
 import android.content.Context;
 import android.widget.Toast;
