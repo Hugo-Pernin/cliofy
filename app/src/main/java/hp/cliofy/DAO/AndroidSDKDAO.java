@@ -13,7 +13,7 @@ import com.spotify.protocol.types.Track;
 /**
  * DAO communicating with the Spotify Android app
  */
-public class AndroidSDKDAO {
+class AndroidSDKDAO {
     /**
      * Client ID found in the Spotify developer dashboard
      */

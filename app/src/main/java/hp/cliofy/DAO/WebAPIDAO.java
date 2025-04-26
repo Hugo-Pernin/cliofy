@@ -34,7 +34,7 @@ import hp.cliofy.Item.Playlist;
 /**
  * DAO communicating with the Spotify Web API
  */
-public class WebAPIDAO {
+class WebAPIDAO {
     /**
      * Client ID found in the Spotify developer dashboard
      */
