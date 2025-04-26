@@ -74,10 +74,8 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      */
     private List<Playlist> playlistsList;
 
-    /**
-     * TODO expliquer
-     */
-    private ArrayAdapter<Playlist> adapter;
+    private ListView topArtistsListView;
+    private List<Artist> topArtistsList;
 
     // TODO commenter
     @Override
@@ -92,15 +90,22 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         informations = findViewById(R.id.informations);
         albumCover = findViewById(R.id.albumCover);
         playlistsListView = findViewById(R.id.playlistsListView);
+        topArtistsListView = findViewById(R.id.topArtistsListView);
+
         pauseResumeButton.setOnClickListener(this::pauseResumeClick);
         skipPreviousButton.setOnClickListener(this::skipPreviousClick);
         skipNextButton.setOnClickListener(this::skipNextClick);
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         playlistsList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
-        playlistsListView.setAdapter(adapter);
+        ArrayAdapter<Playlist> playlistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
+        playlistsListView.setAdapter(playlistsAdapter);
         playlistsListView.setOnItemClickListener(this::playPlaylist);
+
+        topArtistsList = new ArrayList<>();
+        ArrayAdapter<Artist> topArtistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topArtistsList);
+        topArtistsListView.setAdapter(topArtistsAdapter);
+        //playlistsListView.setOnItemClickListener(this::openArtistPage);
 
         generalDAO = new GeneralDAO();
         generalDAO.addObserver(this);
@@ -149,9 +154,12 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
                 generalDAO.storeAuthorizationCode(authorizationCode);
-                List<Playlist> list = generalDAO.getPlaylistsList();
-                playlistsList.addAll(list);
+                List<Playlist> playlists = generalDAO.getPlaylistsList();
+                playlistsList.addAll(playlists);
+                List<Artist> topArtists = generalDAO.getTopArtists();
+                topArtistsList.addAll(topArtists);
                 refreshListViewHeight(playlistsListView);
+                refreshListViewHeight(topArtistsListView);
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();

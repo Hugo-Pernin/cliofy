@@ -45,7 +45,7 @@ public class WebAPIDAO {
     /**
      * Permissions given to the DAO
      */
-    private final String SCOPE = "user-read-private user-read-email playlist-read-private";
+    private final String SCOPE = "user-read-private user-read-email playlist-read-private user-top-read";
 
     /**
      * Code verifier used to get the access token
@@ -244,17 +244,73 @@ public class WebAPIDAO {
                         }
 
                         BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        String line;
-                        while ((line = rd.readLine()) != null) {
-                            JSONObject json = new JSONObject(line);
-                            JSONArray array = json.getJSONArray("items");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject object = array.getJSONObject(i);
-                                String name = object.get("name").toString();
-                                String uri = object.get("uri").toString();
-                                Playlist playlist = new Playlist(name, uri);
-                                list.add(playlist);
-                            }
+                        JSONObject json = new JSONObject(rd.readLine());
+                        JSONArray array = json.getJSONArray("items");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String name = object.get("name").toString();
+                            String uri = object.get("uri").toString();
+                            Playlist playlist = new Playlist(name, uri);
+                            list.add(playlist);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    /**
+     * Gets the top artists of the current user
+     * @return top artists of the current user
+     * TODO commenter
+     */
+    public List<Artist> getTopArtists() {
+        List<Artist> list = new ArrayList<>();
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection urlConnection = null;
+                    try {
+                        URL url = new URL("https://api.spotify.com/v1/me/top/artists?time_range=short_term");
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                        urlConnection.setRequestMethod("GET");
+
+                        int code = urlConnection.getResponseCode();
+                        if (code !=  200) {
+                            throw new IOException("Invalid response from server: " + code);
+                        }
+
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        JSONObject json = new JSONObject(rd.readLine());
+                        JSONArray array = json.getJSONArray("items");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String name = object.get("name").toString();
+                            String uri = object.get("uri").toString();
+                            Artist artist = new Artist(name, uri);
+                            list.add(artist);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

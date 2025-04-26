@@ -101,4 +101,12 @@ public class GeneralDAO extends Observable {
     public List<Playlist> getPlaylistsList() {
         return webAPIDAO.getPlaylistsList();
     }
+
+    /**
+     * Gets the top artists of the current user
+     * @return top artists of the current user
+     */
+    public List<Artist> getTopArtists() {
+        return webAPIDAO.getTopArtists();
+    }
 }
