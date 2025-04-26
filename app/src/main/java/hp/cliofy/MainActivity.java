@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
@@ -109,12 +110,12 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         topArtistsList = new ArrayList<>();
         ArrayAdapter<Artist> topArtistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topArtistsList);
         topArtistsListView.setAdapter(topArtistsAdapter);
-        //playlistsListView.setOnItemClickListener(this::openArtistPage);
+        topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 
-        generalDAO = new GeneralDAO();
+        generalDAO = GeneralDAO.getInstance();
         generalDAO.addObserver(this);
         generalDAO.connect(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
 
     /**
@@ -126,6 +127,21 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      */
     private void playPlaylist(AdapterView<?> adapterView, View view, int i, long l) {
         generalDAO.play(playlistsList.get(i).getUri());
+    }
+
+    /**
+     * Opens an ArtistActivity of the artist depending on its index in the list
+     * @param adapterView TODO expliquer
+     * @param view TODO expliquer
+     * @param i index of the artist in the list
+     * @param l TODO expliquer
+     */
+    private void openArtistActivity(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this, ArtistActivity.class);
+        Artist artist = topArtistsList.get(i);
+        Gson gson = new Gson();
+        intent.putExtra("artist", gson.toJson(artist));
+        startActivity(intent);
     }
 
     @Override

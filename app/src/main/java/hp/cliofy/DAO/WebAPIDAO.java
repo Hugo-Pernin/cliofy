@@ -310,9 +310,16 @@ class WebAPIDAO {
                         JSONArray array = json.getJSONArray("items");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
-                            String name = object.get("name").toString();
-                            String uri = object.get("uri").toString();
-                            Artist artist = new Artist(name, uri);
+                            String name = object.getString("name");
+                            String uri = object.getString("uri");
+                            int followersTotal = object.getJSONObject("followers").getInt("total");
+                            List<String> genres = new ArrayList<>();
+                            JSONArray genresArray = object.getJSONArray("genres");
+                            for (int j = 0; j < genresArray.length(); j++) {
+                                genres.add(genresArray.getString(j));
+                            }
+                            String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
+                            Artist artist = new Artist(name, uri, followersTotal, genres, imageUrl);
                             list.add(artist);
                         }
                     } catch (Exception e) {

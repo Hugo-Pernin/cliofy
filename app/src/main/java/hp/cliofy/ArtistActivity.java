@@ -2,23 +2,39 @@ package hp.cliofy;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import android.view.WindowManager;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import hp.cliofy.DAO.GeneralDAO;
+import hp.cliofy.Item.Artist;
 
 public class ArtistActivity extends AppCompatActivity {
+    private Artist artist;
+
+    private GeneralDAO generalDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_artist);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            Gson gson = new Gson();
+            artist = gson.fromJson(bundle.getString("artist"), Artist.class);
+        }
+
+        generalDAO = GeneralDAO.getInstance();
+
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(artist.toString() + "\n" +
+                artist.getFollowersTotal() + " followers\n" +
+                "Genres: " + artist.getGenres());
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
 }
