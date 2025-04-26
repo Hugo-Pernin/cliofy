@@ -43,7 +43,7 @@ public abstract class Observable {
      * Notifies observers that the pause state has changed
      * @param isPaused true if the player is paused, false if not
      */
-    protected void notifyPauseChange(boolean isPaused) {
+    public void notifyPauseChange(boolean isPaused) {
         for (IObserver observer : observers) {
             observer.pauseChange(isPaused);
         }
@@ -53,7 +53,7 @@ public abstract class Observable {
      * Notifies observers that the shuffling state has changed
      * @param isShuffling true if the player is shuffling, false if not
      */
-    protected void notifyShuffleChange(boolean isShuffling) {
+    public void notifyShuffleChange(boolean isShuffling) {
         for (IObserver observer : observers) {
             observer.shuffleChange(isShuffling);
         }
@@ -63,7 +63,7 @@ public abstract class Observable {
      * Notifies observers that the track has changed
      * @param track the new track
      */
-    protected void notifyTrackChange(Track track) {
+    public void notifyTrackChange(Track track) {
         for (IObserver observer : observers) {
             observer.trackChange(track);
         }
@@ -73,7 +73,7 @@ public abstract class Observable {
      * Notifies observers that the image has changed
      * @param bitmap the new image
      */
-    protected void notifyImageChange(Bitmap bitmap) {
+    public void notifyImageChange(Bitmap bitmap) {
         for (IObserver observer : observers) {
             observer.imageChange(bitmap);
         }
