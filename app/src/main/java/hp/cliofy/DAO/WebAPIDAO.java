@@ -315,6 +315,7 @@ class WebAPIDAO {
                             String name = object.getString("name");
                             String uri = object.getString("uri");
                             Artist artist = new Artist(name, uri);
+                            hydrateArtist(artist);
                             list.add(artist);
                         }
                     } catch (Exception e) {

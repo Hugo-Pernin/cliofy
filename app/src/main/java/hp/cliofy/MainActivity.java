@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import java.util.List;
 import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
+import hp.cliofy.Item.Track;
 
 /**
  * Main activity of the project
@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         startActivity(intent);
     }
 
+    // TODO enlever ?
     @Override
     protected void onStart() {
         super.onStart();
@@ -155,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         super.onStop();
     }
 
-    // TODO enlever ?
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             String authorizationCode = uri.getQueryParameter("code");
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
-                generalDAO.storeAuthorizationCode(authorizationCode);
+                generalDAO.storeAuthorizationCode(authorizationCode, this);
                 List<Playlist> playlists = generalDAO.getPlaylistsList();
                 playlistsList.addAll(playlists);
                 List<Artist> topArtists = generalDAO.getTopArtists();
@@ -263,10 +263,11 @@ public class MainActivity extends AppCompatActivity implements IObserver {
 
     @Override
     public void trackChange(Track track) {
+        generalDAO.hydrateTrack(track);
         informations.setText(
-                track.name + "\n" +
-                track.artist.name + "\n" +
-                track.album.name
+                track.toString() + "\n" +
+                track.getArtist().toString() + "\n" +
+                track.getAlbum().toString()
         );
     }
 

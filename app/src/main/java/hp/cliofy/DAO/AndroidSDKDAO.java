@@ -6,9 +6,9 @@ import android.widget.Toast;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Image;
 import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
+
+import hp.cliofy.Item.Track;
 
 /**
  * DAO communicating with the Spotify Android app
@@ -138,15 +138,19 @@ class AndroidSDKDAO {
     private void refreshPlayerState(PlayerState playerState, GeneralDAO generalDAO) {
         isPaused = playerState.isPaused;
         boolean isShuffling = playerState.playbackOptions.isShuffling;
-        Track track = playerState.track;
+
+        String name = playerState.track.name;
+        String uri = playerState.track.uri;
+
+        hp.cliofy.Item.Track track = new Track(name, uri);
 
         generalDAO.notifyPauseChange(isPaused);
         generalDAO.notifyShuffleChange(isShuffling);
         generalDAO.notifyTrackChange(track);
 
-        spotifyAppRemote
+        /*spotifyAppRemote
                 .getImagesApi()
                 .getImage(track.imageUri, Image.Dimension.LARGE)
-                .setResultCallback(generalDAO::notifyImageChange);
+                .setResultCallback(generalDAO::notifyImageChange);*/
     }
 }

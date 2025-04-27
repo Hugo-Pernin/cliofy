@@ -45,20 +45,28 @@ public class GeneralDAO extends Observable {
     }
 
     /**
-     * Connects all the DAOs
+     * Connects the web API DAO
      * @param context TODO expliquer
      */
     public void connect(Context context) {
         webAPIDAO.connect(context);
+    }
+
+    /**
+     * Connects the Android SDK DAO
+     * @param context TODO expliquer
+     */
+    private void connectAndroidSDKDAO(Context context) {
         androidSDKDAO.connect(context, this);
     }
 
     /**
-     * Stores the authorization code
+     * Stores the authorization code and then connects the Android SDK DAO
      * @param authorizationCode authorization code to store
      */
-    public void storeAuthorizationCode(String authorizationCode) {
+    public void storeAuthorizationCode(String authorizationCode, Context context) {
         webAPIDAO.storeAuthorizationCode(authorizationCode);
+        connectAndroidSDKDAO(context);
     }
 
     /**
