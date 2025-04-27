@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class ArtistActivity extends AppCompatActivity {
     private Artist artist;
 
     private GeneralDAO generalDAO;
+
+    private ImageView artistImage;
 
     private TextView informations;
 
@@ -47,6 +50,9 @@ public class ArtistActivity extends AppCompatActivity {
             artist = gson.fromJson(bundle.getString("artist"), Artist.class);
             generalDAO.hydrateArtist(artist);
         }
+
+        artistImage = findViewById(R.id.artistImage);
+        artistImage.setImageBitmap(generalDAO.getBitmapImageFromUrl(artist.getImageUrl()));
 
         informations = findViewById(R.id.informations);
         informations.setText(artist.toString() + "\n" +
