@@ -4,6 +4,10 @@ package hp.cliofy.Item;
  * A simplified playlist
  */
 public class Playlist extends Item {
+    public String getId() {
+        return this.getUri().substring(18);
+    }
+
     /**
      * Creates a playlist
      * @param name name of the playlist
