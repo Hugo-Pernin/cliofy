@@ -42,7 +42,7 @@ public class Album extends Item {
     }
 
     public String getId() {
-        return this.getUri().substring(15);
+        return this.getUri().substring(14);
     }
 
     /**

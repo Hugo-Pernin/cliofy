@@ -5,7 +5,7 @@ package hp.cliofy.Item;
  */
 public class Playlist extends Item {
     public String getId() {
-        return this.getUri().substring(18);
+        return this.getUri().substring(17);
     }
 
     /**

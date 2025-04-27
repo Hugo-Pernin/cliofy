@@ -35,7 +35,7 @@ public class Artist extends Item {
     }
 
     public String getId() {
-        return this.getUri().substring(16);
+        return this.getUri().substring(15);
     }
 
     /**
