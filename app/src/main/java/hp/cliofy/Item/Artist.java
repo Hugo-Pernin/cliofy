@@ -1,6 +1,5 @@
 package hp.cliofy.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,26 +14,36 @@ public class Artist extends Item {
         return followersTotal;
     }
 
+    public void setFollowersTotal(int followersTotal) {
+        this.followersTotal = followersTotal;
+    }
+
     public List<String> getGenres() {
-        return new ArrayList<>(genres);
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getId() {
+        return this.getUri().substring(16);
+    }
+
     /**
      * Creates an artist
      * @param name name of the artist
      * @param uri  uri of the artist
-     * @param followersTotal number of followers of the artist
-     * @param genres list of genres of the artist
-     * @param imageUrl url of the image of the artist
      */
-    public Artist(String name, String uri, int followersTotal, List<String> genres, String imageUrl) {
+    public Artist(String name, String uri) {
         super(name, uri);
-        this.followersTotal = followersTotal;
-        this.genres = genres;
-        this.imageUrl = imageUrl;
     }
 }
