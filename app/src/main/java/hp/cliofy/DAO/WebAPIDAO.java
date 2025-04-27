@@ -229,7 +229,7 @@ class WebAPIDAO {
         List<Playlist> list = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest("https://api.spotify.com/v1/me/playlists");
+            JSONObject json = getRequest("https://api.spotify.com/v1/me/playlists?limit=50");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
