@@ -2,6 +2,7 @@ package hp.cliofy;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -9,11 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.gson.Gson;
 
@@ -21,7 +18,6 @@ import java.util.List;
 
 import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Album;
-import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Track;
 
 public class AlbumActivity extends AppCompatActivity {
@@ -61,6 +57,7 @@ public class AlbumActivity extends AppCompatActivity {
         tracksListView.setAdapter(tracksAdapter);
         refreshListViewHeight(tracksListView);
         tracksListView.setOnItemClickListener(this::playTrack);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
