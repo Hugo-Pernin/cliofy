@@ -323,7 +323,7 @@ class WebAPIDAO {
         List<Album> albums = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest("https://api.spotify.com/v1/artists/" + artist.getId() + "/albums");
+            JSONObject json = getRequest("https://api.spotify.com/v1/artists/" + artist.getId() + "/albums?limit=50");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
