@@ -6,6 +6,7 @@ import java.util.List;
 
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
+import hp.cliofy.Item.Track;
 import hp.cliofy.Observable;
 
 /**
@@ -125,5 +126,9 @@ public class GeneralDAO extends Observable {
      */
     public List<Artist> getTopArtists() {
         return webAPIDAO.getTopArtists();
+    }
+
+    public void hydrateTrack(Track track) {
+        webAPIDAO.hydrateTrack(track);
     }
 }

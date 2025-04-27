@@ -28,8 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
+import hp.cliofy.Item.Track;
 
 /**
  * DAO communicating with the Spotify Web API
@@ -312,14 +314,7 @@ class WebAPIDAO {
                             JSONObject object = array.getJSONObject(i);
                             String name = object.getString("name");
                             String uri = object.getString("uri");
-                            int followersTotal = object.getJSONObject("followers").getInt("total");
-                            List<String> genres = new ArrayList<>();
-                            JSONArray genresArray = object.getJSONArray("genres");
-                            for (int j = 0; j < genresArray.length(); j++) {
-                                genres.add(genresArray.getString(j));
-                            }
-                            String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
-                            Artist artist = new Artist(name, uri, followersTotal, genres, imageUrl);
+                            Artist artist = new Artist(name, uri);
                             list.add(artist);
                         }
                     } catch (Exception e) {
@@ -344,5 +339,159 @@ class WebAPIDAO {
         }
 
         return list;
+    }
+
+    public void hydrateAlbum(Album album) {
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection urlConnection = null;
+                    try {
+                        URL url = new URL("https://api.spotify.com/v1/albums/" + album.getId());
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                        urlConnection.setRequestMethod("GET");
+
+                        int code = urlConnection.getResponseCode();
+                        if (code !=  200) {
+                            throw new IOException("Invalid response from server: " + code);
+                        }
+
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        JSONObject json = new JSONObject(rd.readLine());
+                        album.setAlbumType(json.getString("album_type"));
+                        album.setTotalTracks(json.getInt("total_tracks"));
+                        album.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("uri"));
+                        album.setReleaseDate(json.getString("release_date"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hydrateArtist(Artist artist) {
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection urlConnection = null;
+                    try {
+                        URL url = new URL("https://api.spotify.com/v1/artists/" + artist.getId());
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                        urlConnection.setRequestMethod("GET");
+
+                        int code = urlConnection.getResponseCode();
+                        if (code !=  200) {
+                            throw new IOException("Invalid response from server: " + code);
+                        }
+
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        JSONObject json = new JSONObject(rd.readLine());
+                        artist.setFollowersTotal(json.getJSONObject("followers").getInt("total"));
+
+                        List<String> genres = new ArrayList<>();
+                        JSONArray genresArray = json.getJSONArray("genres");
+                        for (int i = 0; i < genresArray.length(); i++) {
+                            genres.add(genresArray.getString(i));
+                        }
+                        artist.setGenres(genres);
+
+                        artist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("uri"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hydratePlaylist(Playlist playlist) {
+
+    }
+
+    public void hydrateTrack(Track track) {
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection urlConnection = null;
+                    try {
+                        URL url = new URL("https://api.spotify.com/v1/tracks/" + track.getId());
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                        urlConnection.setRequestMethod("GET");
+
+                        int code = urlConnection.getResponseCode();
+                        if (code !=  200) {
+                            throw new IOException("Invalid response from server: " + code);
+                        }
+
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        JSONObject json = new JSONObject(rd.readLine());
+                        track.setAlbum(new Album(json.getJSONObject("album").getString("name"),
+                                json.getJSONObject("album").getString("uri")));
+                        track.setArtist(new Artist(json.getJSONArray("artists").getJSONObject(0).getString("name"),
+                                json.getJSONArray("artists").getJSONObject(0).getString("uri")));
+                        track.setDiscNumber(json.getInt("disc_number"));
+                        track.setDurationMs(json.getInt("duration_ms"));
+                        track.setTrackNumber(json.getInt("track_number"));
+
+                        hydrateAlbum(track.getAlbum());
+                        hydrateArtist(track.getArtist());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
