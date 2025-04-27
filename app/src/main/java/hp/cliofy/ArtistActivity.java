@@ -38,6 +38,12 @@ public class ArtistActivity extends AppCompatActivity {
     private ListView albumsListView;
     private List<Album> albumsList;
 
+    private ListView singlesListView;
+    private List<Album> singlesList;
+
+    private ListView compilationsListView;
+    private List<Album> compilationsList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +74,25 @@ public class ArtistActivity extends AppCompatActivity {
         topTracksListView.setOnItemClickListener(this::playTrack);
 
         albumsListView = findViewById(R.id.albumsListView);
-        albumsList = generalDAO.getArtistAlbums(artist);
+        albumsList = generalDAO.getArtistAlbums(artist, "album");
         ArrayAdapter<Album> albumsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
         albumsListView.setOnItemClickListener(this::openAlbumActivity);
+
+        singlesListView = findViewById(R.id.singlesListView);
+        singlesList = generalDAO.getArtistAlbums(artist, "single");
+        ArrayAdapter<Album> singlesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, singlesList);
+        singlesListView.setAdapter(singlesAdapter);
+        refreshListViewHeight(singlesListView);
+        singlesListView.setOnItemClickListener(this::openSingleActivity);
+
+        compilationsListView = findViewById(R.id.compilationsListView);
+        compilationsList = generalDAO.getArtistAlbums(artist, "compilation");
+        ArrayAdapter<Album> compilationsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, compilationsList);
+        compilationsListView.setAdapter(compilationsAdapter);
+        refreshListViewHeight(compilationsListView);
+        compilationsListView.setOnItemClickListener(this::openCompilationActivity);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
@@ -81,9 +101,26 @@ public class ArtistActivity extends AppCompatActivity {
         generalDAO.play(topTracksList.get(i).getUri());
     }
 
+    // TODO refactoriser
     private void openAlbumActivity(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(this, AlbumActivity.class);
         Album album = albumsList.get(i);
+        Gson gson = new Gson();
+        intent.putExtra("album", gson.toJson(album));
+        startActivity(intent);
+    }
+
+    private void openSingleActivity(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this, AlbumActivity.class);
+        Album album = singlesList.get(i);
+        Gson gson = new Gson();
+        intent.putExtra("album", gson.toJson(album));
+        startActivity(intent);
+    }
+
+    private void openCompilationActivity(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this, AlbumActivity.class);
+        Album album = compilationsList.get(i);
         Gson gson = new Gson();
         intent.putExtra("album", gson.toJson(album));
         startActivity(intent);

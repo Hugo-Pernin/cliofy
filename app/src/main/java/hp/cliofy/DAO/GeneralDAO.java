@@ -160,8 +160,8 @@ public class GeneralDAO extends Observable {
         webAPIDAO.hydratePlaylist(playlist);
     }
 
-    public List<Album> getArtistAlbums(Artist artist) {
-        return webAPIDAO.getArtistAlbums(artist);
+    public List<Album> getArtistAlbums(Artist artist, String type) {
+        return webAPIDAO.getArtistAlbums(artist, type);
     }
 
     public List<Track> getArtistTopTracks(Artist artist) {
