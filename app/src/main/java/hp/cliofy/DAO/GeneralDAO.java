@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
@@ -138,5 +139,25 @@ public class GeneralDAO extends Observable {
 
     public void hydrateTrack(Track track) {
         webAPIDAO.hydrateTrack(track);
+    }
+
+    public void hydrateAlbum(Album album) {
+        webAPIDAO.hydrateAlbum(album);
+    }
+
+    public void hydrateArtist(Artist artist) {
+        webAPIDAO.hydrateArtist(artist);
+    }
+
+    public void hydratePlaylist(Playlist playlist) {
+        webAPIDAO.hydratePlaylist(playlist);
+    }
+
+    public List<Album> getArtistAlbums(Artist artist) {
+        return webAPIDAO.getArtistAlbums(artist);
+    }
+
+    public List<Track> getArtistTopTracks(Artist artist) {
+        return webAPIDAO.getArtistTopTracks(artist);
     }
 }
