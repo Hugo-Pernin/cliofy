@@ -166,52 +166,48 @@ class WebAPIDAO {
      * TODO commenter
      */
     private void requestAccessToken() {
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+        Thread thread = new Thread(() -> {
+            try {
+                HttpURLConnection urlConnection = null;
                 try {
-                    HttpURLConnection urlConnection = null;
-                    try {
-                        String postData = "grant_type=authorization_code" +
-                                "&code=" + authorizationCode +
-                                "&redirect_uri=" + REDIRECT_URI +
-                                "&client_id=" + CLIENT_ID +
-                                "&code_verifier=" + codeVerifier;
+                    String postData = "grant_type=authorization_code" +
+                            "&code=" + authorizationCode +
+                            "&redirect_uri=" + REDIRECT_URI +
+                            "&client_id=" + CLIENT_ID +
+                            "&code_verifier=" + codeVerifier;
 
-                        URL url = new URL("https://accounts.spotify.com/api/token");
+                    URL url = new URL("https://accounts.spotify.com/api/token");
 
-                        urlConnection = (HttpURLConnection) url.openConnection();
-                        urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                        urlConnection.setRequestMethod("POST");
-                        urlConnection.setDoOutput(true);
-                        urlConnection.setDoInput(true);
-                        urlConnection.setChunkedStreamingMode(0);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setDoInput(true);
+                    urlConnection.setChunkedStreamingMode(0);
 
-                        OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-                        writer.write(postData);
-                        writer.flush();
+                    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+                    writer.write(postData);
+                    writer.flush();
 
-                        int code = urlConnection.getResponseCode();
-                        if (code !=  200) {
-                            throw new IOException("Invalid response from server: " + code);
-                        }
-
-                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        JSONObject json = new JSONObject(rd.readLine());
-                        accessToken = json.get("access_token").toString();
-                        refreshToken = json.get("refresh_token").toString();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (urlConnection != null) {
-                            urlConnection.disconnect();
-                        }
+                    int code = urlConnection.getResponseCode();
+                    if (code !=  200) {
+                        throw new IOException("Invalid response from server: " + code);
                     }
+
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    JSONObject json = new JSONObject(rd.readLine());
+                    accessToken = json.get("access_token").toString();
+                    refreshToken = json.get("refresh_token").toString();
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -366,34 +362,31 @@ class WebAPIDAO {
     private JSONObject getRequest(String endpoint) {
         final JSONObject[] json = {null}; // A one-entry array is necessary
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread thread = new Thread(() -> {
+            try {
+                HttpURLConnection urlConnection = null;
                 try {
-                    HttpURLConnection urlConnection = null;
-                    try {
-                        URL url = new URL(endpoint);
-                        urlConnection = (HttpURLConnection) url.openConnection();
-                        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-                        urlConnection.setRequestMethod("GET");
+                    URL url = new URL(endpoint);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                    urlConnection.setRequestMethod("GET");
 
-                        int code = urlConnection.getResponseCode();
-                        if (code !=  200) {
-                            throw new IOException("Invalid response from server: " + code);
-                        }
-
-                        BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        json[0] = new JSONObject(rd.readLine());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (urlConnection != null) {
-                            urlConnection.disconnect();
-                        }
+                    int code = urlConnection.getResponseCode();
+                    if (code !=  200) {
+                        throw new IOException("Invalid response from server: " + code);
                     }
+
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    json[0] = new JSONObject(rd.readLine());
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
