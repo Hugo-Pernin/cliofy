@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         playlistsList = new ArrayList<>();
         ArrayAdapter<Playlist> playlistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
         playlistsListView.setAdapter(playlistsAdapter);
-        playlistsListView.setOnItemClickListener(this::playPlaylist);
+        playlistsListView.setOnItemClickListener(this::openPlaylistActivity);
 
         topArtistsList = new ArrayList<>();
         ArrayAdapter<Artist> topArtistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topArtistsList);
@@ -125,8 +125,12 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      * @param i index of the playlist in the list
      * @param l TODO expliquer
      */
-    private void playPlaylist(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.play(playlistsList.get(i).getUri());
+    private void openPlaylistActivity(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this, PlaylistActivity.class);
+        Playlist playlist = playlistsList.get(i);
+        Gson gson = new Gson();
+        intent.putExtra("playlist", gson.toJson(playlist));
+        startActivity(intent);
     }
 
     /**

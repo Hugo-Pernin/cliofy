@@ -301,7 +301,13 @@ class WebAPIDAO {
     }
 
     public void hydratePlaylist(Playlist playlist) {
-
+        try {
+            JSONObject json = getRequest("https://api.spotify.com/v1/playlists/" + playlist.getId());
+            playlist.setOwner(json.getJSONObject("owner").getString("display_name"));
+            playlist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void hydrateTrack(Track track) {
@@ -473,5 +479,25 @@ class WebAPIDAO {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Track> getPlaylistTracks(Playlist playlist) {
+        List<Track> tracks = new ArrayList<>();
+
+        try {
+            JSONObject json = getRequest("https://api.spotify.com/v1/playlists/" + playlist.getId() + "/tracks");
+            JSONArray array = json.getJSONArray("items");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i).getJSONObject("track");
+                String name = object.getString("name");
+                String uri = object.getString("uri");
+                Track track = new Track(name, uri);
+                tracks.add(track);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return tracks;
     }
 }

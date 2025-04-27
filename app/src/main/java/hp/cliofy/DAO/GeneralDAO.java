@@ -172,6 +172,10 @@ public class GeneralDAO extends Observable {
         return webAPIDAO.getAlbumTracks(album);
     }
 
+    public List<Track> getPlaylistTracks(Playlist playlist) {
+        return webAPIDAO.getPlaylistTracks(playlist);
+    }
+
     public Bitmap getBitmapImageFromUrl(String url) {
         final Bitmap[] image = new Bitmap[1]; // A one-entry array is necessary
 
