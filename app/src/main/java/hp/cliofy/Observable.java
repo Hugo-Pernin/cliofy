@@ -2,10 +2,10 @@ package hp.cliofy;
 
 import android.graphics.Bitmap;
 
-import com.spotify.protocol.types.Track;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import hp.cliofy.Item.Track;
 
 /**
  * Class for an observable / a subject

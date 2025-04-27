@@ -2,7 +2,7 @@ package hp.cliofy;
 
 import android.graphics.Bitmap;
 
-import com.spotify.protocol.types.Track;
+import hp.cliofy.Item.Track;
 
 /**
  * Interface for an observer / a subscriber
