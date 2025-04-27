@@ -70,7 +70,7 @@ public class GeneralDAO extends Observable {
      */
     public void storeAuthorizationCode(String authorizationCode, Context context) {
         webAPIDAO.storeAuthorizationCode(authorizationCode);
-        connectAndroidSDKDAO(context);
+        connectAndroidSDKDAO(context); // TODO why here?
     }
 
     /**
@@ -108,6 +108,10 @@ public class GeneralDAO extends Observable {
      */
     public void play(String uri) {
         androidSDKDAO.play(uri);
+    }
+
+    public void playWithOffset(String uri, int offset) {
+        webAPIDAO.playWithOffset(uri, offset);
     }
 
     /**
@@ -162,6 +166,10 @@ public class GeneralDAO extends Observable {
 
     public List<Track> getArtistTopTracks(Artist artist) {
         return webAPIDAO.getArtistTopTracks(artist);
+    }
+
+    public List<Track> getAlbumTracks(Album album) {
+        return webAPIDAO.getAlbumTracks(album);
     }
 
     public Bitmap getBitmapImageFromUrl(String url) {

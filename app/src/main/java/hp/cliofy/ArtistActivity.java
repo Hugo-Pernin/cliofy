@@ -1,5 +1,6 @@
 package hp.cliofy;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,7 +72,7 @@ public class ArtistActivity extends AppCompatActivity {
         ArrayAdapter<Album> albumsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
-        albumsListView.setOnItemClickListener(this::playAlbum);
+        albumsListView.setOnItemClickListener(this::openAlbumActivity);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
@@ -80,8 +81,12 @@ public class ArtistActivity extends AppCompatActivity {
         generalDAO.play(topTracksList.get(i).getUri());
     }
 
-    private void playAlbum(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.play(albumsList.get(i).getUri());
+    private void openAlbumActivity(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this, AlbumActivity.class);
+        Album album = albumsList.get(i);
+        Gson gson = new Gson();
+        intent.putExtra("album", gson.toJson(album));
+        startActivity(intent);
     }
 
     private void refreshListViewHeight(ListView listView) {

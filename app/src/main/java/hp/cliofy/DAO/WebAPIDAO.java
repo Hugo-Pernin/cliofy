@@ -51,7 +51,7 @@ class WebAPIDAO {
     /**
      * Permissions given to the DAO
      */
-    private final String SCOPE = "user-read-private user-read-email playlist-read-private user-top-read";
+    private final String SCOPE = "user-read-private user-read-email playlist-read-private user-top-read user-modify-playback-state";
 
     /**
      * Code verifier used to get the access token
@@ -399,5 +399,79 @@ class WebAPIDAO {
         }
 
         return json[0];
+    }
+
+    public List<Track> getAlbumTracks(Album album) {
+        List<Track> tracks = new ArrayList<>();
+
+        try {
+            JSONObject json = getRequest("https://api.spotify.com/v1/albums/" + album.getId() + "/tracks");
+            JSONArray array = json.getJSONArray("items");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i);
+                String name = object.getString("name");
+                String uri = object.getString("uri");
+                Track track = new Track(name, uri);
+                tracks.add(track);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return tracks;
+    }
+
+    public void playWithOffset(String uri, int offset) {
+        Thread thread = new Thread(() -> {
+            try {
+                HttpURLConnection urlConnection = null;
+                try {
+                    String putData = "{\"context_uri\":\"" + uri + "\",\"offset\":{\"position\":" + offset + "}}";
+
+                    URL url = new URL("https://api.spotify.com/v1/me/player/play");
+
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+                    urlConnection.setRequestMethod("PUT");
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setDoInput(true);
+                    urlConnection.setChunkedStreamingMode(0);
+
+                    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+                    writer.write(putData);
+                    writer.flush();
+                    writer.close();
+                    out.close();
+
+                    int code = urlConnection.getResponseCode();
+                    if (code !=  200) {
+                        throw new IOException("Invalid response from server: " + code);
+                    }
+
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    JSONObject json = new JSONObject(rd.readLine());
+                    accessToken = json.get("access_token").toString();
+                    refreshToken = json.get("refresh_token").toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
