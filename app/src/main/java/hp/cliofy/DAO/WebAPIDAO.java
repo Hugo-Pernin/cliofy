@@ -364,7 +364,7 @@ class WebAPIDAO {
                         JSONObject json = new JSONObject(rd.readLine());
                         album.setAlbumType(json.getString("album_type"));
                         album.setTotalTracks(json.getInt("total_tracks"));
-                        album.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("uri"));
+                        album.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
                         album.setReleaseDate(json.getString("release_date"));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -417,7 +417,7 @@ class WebAPIDAO {
                         }
                         artist.setGenres(genres);
 
-                        artist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("uri"));
+                        artist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {

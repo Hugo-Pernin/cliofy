@@ -1,7 +1,10 @@
 package hp.cliofy.DAO;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import java.net.URL;
 import java.util.List;
 
 import hp.cliofy.Item.Album;
@@ -159,5 +162,32 @@ public class GeneralDAO extends Observable {
 
     public List<Track> getArtistTopTracks(Artist artist) {
         return webAPIDAO.getArtistTopTracks(artist);
+    }
+
+    public Bitmap getBitmapImageFromUrl(String url) {
+        final Bitmap[] image = new Bitmap[1]; // A one-entry array is necessary
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    URL urlObject = new URL(url);
+                    image[0] = BitmapFactory.decodeStream(urlObject.openConnection().getInputStream());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return image[0];
     }
 }
