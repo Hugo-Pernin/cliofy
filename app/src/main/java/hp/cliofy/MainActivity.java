@@ -103,12 +103,14 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         playlistsList = new ArrayList<>();
-        ArrayAdapter<Playlist> playlistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
+        //ArrayAdapter<Playlist> playlistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playlistsList);
+        ItemAdapter<Playlist> playlistsAdapter = new ItemAdapter<>(this, playlistsList);
         playlistsListView.setAdapter(playlistsAdapter);
         playlistsListView.setOnItemClickListener(this::openPlaylistActivity);
 
         topArtistsList = new ArrayList<>();
-        ArrayAdapter<Artist> topArtistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topArtistsList);
+        //ArrayAdapter<Artist> topArtistsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topArtistsList);
+        ItemAdapter<Artist> topArtistsAdapter = new ItemAdapter<>(this, topArtistsList);
         topArtistsListView.setAdapter(topArtistsAdapter);
         topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 

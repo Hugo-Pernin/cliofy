@@ -1,5 +1,7 @@
 package hp.cliofy.Item;
 
+import androidx.annotation.NonNull;
+
 public class Track extends Item {
     private Album album;
     private Artist artist;
@@ -64,8 +66,19 @@ public class Track extends Item {
      * Creates a track
      * @param name name of the track
      * @param uri  uri of the track
+     * @param imageUrl url of the image of the track - unused
      */
+    public Track(String name, String uri, String imageUrl) {
+        super(name, uri, imageUrl);
+    }
+
     public Track(String name, String uri) {
-        super(name, uri);
+        super(name, uri, "");
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return super.toString() + " - " + getArtist().toString() + " (" + getAlbum().toString() + ")";
     }
 }

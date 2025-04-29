@@ -33,8 +33,9 @@ public class Artist extends Item {
      * Creates an artist
      * @param name name of the artist
      * @param uri  uri of the artist
+     * @param imageUrl url of the image of the artist
      */
-    public Artist(String name, String uri) {
-        super(name, uri);
+    public Artist(String name, String uri, String imageUrl) {
+        super(name, uri, imageUrl);
     }
 }

@@ -235,7 +235,8 @@ class WebAPIDAO {
                 JSONObject object = array.getJSONObject(i);
                 String name = object.get("name").toString();
                 String uri = object.get("uri").toString();
-                Playlist playlist = new Playlist(name, uri);
+                String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
+                Playlist playlist = new Playlist(name, uri, imageUrl);
                 list.add(playlist);
             }
         } catch (JSONException e) {
@@ -260,7 +261,8 @@ class WebAPIDAO {
                 JSONObject object = array.getJSONObject(i);
                 String name = object.getString("name");
                 String uri = object.getString("uri");
-                Artist artist = new Artist(name, uri);
+                String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
+                Artist artist = new Artist(name, uri, imageUrl);
                 list.add(artist);
             }
         } catch (JSONException e) {
@@ -275,7 +277,6 @@ class WebAPIDAO {
             JSONObject json = getRequest("https://api.spotify.com/v1/albums/" + album.getId());
             album.setAlbumType(json.getString("album_type"));
             album.setTotalTracks(json.getInt("total_tracks"));
-            album.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
             album.setReleaseDate(json.getString("release_date"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -293,8 +294,6 @@ class WebAPIDAO {
                 genres.add(genresArray.getString(i));
             }
             artist.setGenres(genres);
-
-            artist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -304,7 +303,6 @@ class WebAPIDAO {
         try {
             JSONObject json = getRequest("https://api.spotify.com/v1/playlists/" + playlist.getId());
             playlist.setOwner(json.getJSONObject("owner").getString("display_name"));
-            playlist.setImageUrl(json.getJSONArray("images").getJSONObject(0).getString("url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -313,10 +311,17 @@ class WebAPIDAO {
     public void hydrateTrack(Track track) {
         try {
             JSONObject json = getRequest("https://api.spotify.com/v1/tracks/" + track.getId());
-            track.setAlbum(new Album(json.getJSONObject("album").getString("name"),
-                    json.getJSONObject("album").getString("uri")));
-            track.setArtist(new Artist(json.getJSONArray("artists").getJSONObject(0).getString("name"),
-                    json.getJSONArray("artists").getJSONObject(0).getString("uri")));
+            track.setAlbum(new Album(
+                    json.getJSONObject("album").getString("name"),
+                    json.getJSONObject("album").getString("uri"),
+                    json.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url")
+            ));
+            track.setArtist(new Artist(
+                    json.getJSONArray("artists").getJSONObject(0).getString("name"),
+                    json.getJSONArray("artists").getJSONObject(0).getString("uri"),
+                    ""
+                    //json.getJSONArray("artists").getJSONObject(0).getJSONArray("images").getJSONObject(0).getString("url")
+            ));
             track.setDiscNumber(json.getInt("disc_number"));
             track.setDurationMs(json.getInt("duration_ms"));
             track.setTrackNumber(json.getInt("track_number"));
@@ -335,7 +340,8 @@ class WebAPIDAO {
                 JSONObject object = array.getJSONObject(i);
                 String name = object.getString("name");
                 String uri = object.getString("uri");
-                Album album = new Album(name, uri);
+                String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
+                Album album = new Album(name, uri, imageUrl);
                 albums.add(album);
             }
         } catch (JSONException e) {
@@ -355,7 +361,8 @@ class WebAPIDAO {
                 JSONObject object = array.getJSONObject(i);
                 String name = object.getString("name");
                 String uri = object.getString("uri");
-                Track track = new Track(name, uri);
+                String imageUrl = object.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url");
+                Track track = new Track(name, uri, imageUrl);
                 topTracks.add(track);
             }
         } catch (JSONException e) {

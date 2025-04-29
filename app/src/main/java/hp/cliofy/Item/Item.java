@@ -27,22 +27,15 @@ public abstract class Item {
     }
 
     /**
-     * Sets the image url of the item
-     * @param imageUrl the image url of the item
-     */
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    /**
      * Creates an item
      * @param name name of the item
      * @param uri uri of the item
+     * @param imageUrl url of the image of the item
      */
-    public Item(String name, String uri) {
+    public Item(String name, String uri, String imageUrl) {
         this.name = name;
         this.uri = uri;
-        this.imageUrl = "";
+        this.imageUrl = imageUrl;
     }
 
     @NonNull

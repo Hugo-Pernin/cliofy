@@ -21,6 +21,7 @@ import java.util.List;
 import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
+import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
 
 public class ArtistActivity extends AppCompatActivity {
@@ -68,28 +69,38 @@ public class ArtistActivity extends AppCompatActivity {
 
         topTracksListView = findViewById(R.id.topTracksListView);
         topTracksList = generalDAO.getArtistTopTracks(artist);
-        ArrayAdapter<Track> topTracksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topTracksList);
+
+        // TODO enlever l'hydratation des activités
+        for (Track track : topTracksList) {
+            generalDAO.hydrateTrack(track);
+        }
+
+        //ArrayAdapter<Track> topTracksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topTracksList);
+        ItemAdapter<Track> topTracksAdapter = new ItemAdapter<>(this, topTracksList);
         topTracksListView.setAdapter(topTracksAdapter);
         refreshListViewHeight(topTracksListView);
         topTracksListView.setOnItemClickListener(this::playTrack);
 
         albumsListView = findViewById(R.id.albumsListView);
         albumsList = generalDAO.getArtistAlbums(artist, "album");
-        ArrayAdapter<Album> albumsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
+        //ArrayAdapter<Album> albumsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
+        ItemAdapter<Album> albumsAdapter = new ItemAdapter<>(this, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
         albumsListView.setOnItemClickListener(this::openAlbumActivity);
 
         singlesListView = findViewById(R.id.singlesListView);
         singlesList = generalDAO.getArtistAlbums(artist, "single");
-        ArrayAdapter<Album> singlesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, singlesList);
+        //ArrayAdapter<Album> singlesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, singlesList);
+        ItemAdapter<Album> singlesAdapter = new ItemAdapter<>(this, singlesList);
         singlesListView.setAdapter(singlesAdapter);
         refreshListViewHeight(singlesListView);
         singlesListView.setOnItemClickListener(this::openSingleActivity);
 
         compilationsListView = findViewById(R.id.compilationsListView);
         compilationsList = generalDAO.getArtistAlbums(artist, "compilation");
-        ArrayAdapter<Album> compilationsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, compilationsList);
+        //ArrayAdapter<Album> compilationsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, compilationsList);
+        ItemAdapter<Album> compilationsAdapter = new ItemAdapter<>(this, compilationsList);
         compilationsListView.setAdapter(compilationsAdapter);
         refreshListViewHeight(compilationsListView);
         compilationsListView.setOnItemClickListener(this::openCompilationActivity);

@@ -40,8 +40,9 @@ public class Album extends Item {
      * Creates an album
      * @param name name of the album
      * @param uri  uri of the album
+     * @param imageUrl url of the image of the album
      */
-    public Album(String name, String uri) {
-        super(name, uri);
+    public Album(String name, String uri, String imageUrl) {
+        super(name, uri, imageUrl);
     }
 }
