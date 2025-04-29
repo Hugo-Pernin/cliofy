@@ -6,7 +6,6 @@ package hp.cliofy.Item;
 public class Album extends Item {
     private String albumType; // album, single or compilation
     private int totalTracks;
-    private String imageUrl;
     private String releaseDate;
 
     public String getAlbumType() {
@@ -23,14 +22,6 @@ public class Album extends Item {
 
     public void setTotalTracks(int totalTracks) {
         this.totalTracks = totalTracks;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getReleaseDate() {

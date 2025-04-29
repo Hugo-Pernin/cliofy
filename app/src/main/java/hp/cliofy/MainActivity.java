@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 track.getAlbum().toString()
         );
         generalDAO.hydrateAlbum(track.getAlbum());
-        albumCover.setImageBitmap(generalDAO.getBitmapImageFromUrl(track.getAlbum().getImageUrl()));
+        albumCover.setImageBitmap(generalDAO.getBitmapImageFromUrl(track.getImageUrl()));
     }
 
     @Override

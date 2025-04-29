@@ -8,7 +8,6 @@ import java.util.List;
 public class Artist extends Item {
     private int followersTotal;
     private List<String> genres;
-    private String imageUrl;
 
     public int getFollowersTotal() {
         return followersTotal;
@@ -24,14 +23,6 @@ public class Artist extends Item {
 
     public void setGenres(List<String> genres) {
         this.genres = genres;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getId() {

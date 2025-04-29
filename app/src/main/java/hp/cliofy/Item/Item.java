@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 public abstract class Item {
     private final String name;
     private final String uri;
+    private String imageUrl;
 
     /**
      * Returns the uri of the item
@@ -18,6 +19,22 @@ public abstract class Item {
     }
 
     /**
+     * Gets the image url of the item
+     * @return the image url of the item
+     */
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    /**
+     * Sets the image url of the item
+     * @param imageUrl the image url of the item
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    /**
      * Creates an item
      * @param name name of the item
      * @param uri uri of the item
@@ -25,6 +42,7 @@ public abstract class Item {
     public Item(String name, String uri) {
         this.name = name;
         this.uri = uri;
+        this.imageUrl = "";
     }
 
     @NonNull

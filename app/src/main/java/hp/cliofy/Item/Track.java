@@ -47,6 +47,15 @@ public class Track extends Item {
         this.trackNumber = trackNumber;
     }
 
+    /**
+     * A track has no image, so we return the image of its album instead
+     * @return image of the album of the track
+     */
+    @Override
+    public String getImageUrl() {
+        return this.getAlbum().getImageUrl();
+    }
+
     public String getId() {
         return this.getUri().substring(14);
     }

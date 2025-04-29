@@ -4,7 +4,6 @@ package hp.cliofy.Item;
  * A simplified playlist
  */
 public class Playlist extends Item {
-    private String imageUrl;
     private String owner;
 
     public String getOwner() {
@@ -13,14 +12,6 @@ public class Playlist extends Item {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getId() {
