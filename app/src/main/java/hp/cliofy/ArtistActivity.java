@@ -14,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class ArtistActivity extends AppCompatActivity {
         }
 
         artistImage = findViewById(R.id.artistImage);
-        artistImage.setImageBitmap(generalDAO.getBitmapImageFromUrl(artist.getImageUrl()));
+        Glide.with(this).load(artist.getImageUrl()).into(artistImage);
 
         informations = findViewById(R.id.informations);
         informations.setText(artist.toString() + "\n" +

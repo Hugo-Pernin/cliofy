@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class AlbumActivity extends AppCompatActivity {
         }
 
         albumCover = findViewById(R.id.albumCover);
-        albumCover.setImageBitmap(generalDAO.getBitmapImageFromUrl(album.getImageUrl()));
+        Glide.with(this).load(album.getImageUrl()).into(albumCover);
 
         informations = findViewById(R.id.informations);
         informations.setText(album.toString() + "\n" +

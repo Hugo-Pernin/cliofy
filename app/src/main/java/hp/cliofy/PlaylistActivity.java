@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class PlaylistActivity extends AppCompatActivity {
         }
 
         playlistCover = findViewById(R.id.playlistCover);
-        playlistCover.setImageBitmap(generalDAO.getBitmapImageFromUrl(playlist.getImageUrl()));
+        Glide.with(this).load(playlist.getImageUrl()).into(playlistCover);
 
         informations = findViewById(R.id.informations);
         informations.setText(playlist.toString() + " by " + playlist.getOwner());
