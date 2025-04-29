@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 List<Playlist> playlists = generalDAO.getPlaylistsList();
                 playlistsList.addAll(playlists);
                 List<Artist> topArtists = generalDAO.getTopArtists();
-                topArtistsList.addAll(topArtists.subList(0, 5)); // We only take the top 5
+                topArtistsList.addAll(topArtists);
                 refreshListViewHeight(playlistsListView);
                 refreshListViewHeight(topArtistsListView);
             }

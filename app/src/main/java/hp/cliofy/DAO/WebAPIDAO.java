@@ -255,7 +255,7 @@ class WebAPIDAO {
         List<Artist> list = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest("https://api.spotify.com/v1/me/top/artists?time_range=short_term");
+            JSONObject json = getRequest("https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
@@ -418,7 +418,7 @@ class WebAPIDAO {
         List<Track> tracks = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest("https://api.spotify.com/v1/albums/" + album.getId() + "/tracks");
+            JSONObject json = getRequest("https://api.spotify.com/v1/albums/" + album.getId() + "/tracks?limit=50");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
@@ -492,7 +492,7 @@ class WebAPIDAO {
         List<Track> tracks = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest("https://api.spotify.com/v1/playlists/" + playlist.getId() + "/tracks");
+            JSONObject json = getRequest("https://api.spotify.com/v1/playlists/" + playlist.getId() + "/tracks?limit=50");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i).getJSONObject("track");
