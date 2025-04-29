@@ -76,7 +76,6 @@ public class ArtistActivity extends AppCompatActivity {
             generalDAO.hydrateTrack(track);
         }
 
-        //ArrayAdapter<Track> topTracksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topTracksList);
         ItemAdapter<Track> topTracksAdapter = new ItemAdapter<>(this, topTracksList);
         topTracksListView.setAdapter(topTracksAdapter);
         refreshListViewHeight(topTracksListView);
@@ -84,7 +83,6 @@ public class ArtistActivity extends AppCompatActivity {
 
         albumsListView = findViewById(R.id.albumsListView);
         albumsList = generalDAO.getArtistAlbums(artist, "album");
-        //ArrayAdapter<Album> albumsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, albumsList);
         ItemAdapter<Album> albumsAdapter = new ItemAdapter<>(this, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
@@ -92,7 +90,6 @@ public class ArtistActivity extends AppCompatActivity {
 
         singlesListView = findViewById(R.id.singlesListView);
         singlesList = generalDAO.getArtistAlbums(artist, "single");
-        //ArrayAdapter<Album> singlesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, singlesList);
         ItemAdapter<Album> singlesAdapter = new ItemAdapter<>(this, singlesList);
         singlesListView.setAdapter(singlesAdapter);
         refreshListViewHeight(singlesListView);
@@ -100,7 +97,6 @@ public class ArtistActivity extends AppCompatActivity {
 
         compilationsListView = findViewById(R.id.compilationsListView);
         compilationsList = generalDAO.getArtistAlbums(artist, "compilation");
-        //ArrayAdapter<Album> compilationsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, compilationsList);
         ItemAdapter<Album> compilationsAdapter = new ItemAdapter<>(this, compilationsList);
         compilationsListView.setAdapter(compilationsAdapter);
         refreshListViewHeight(compilationsListView);

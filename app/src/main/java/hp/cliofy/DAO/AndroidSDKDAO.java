@@ -147,10 +147,5 @@ class AndroidSDKDAO {
         generalDAO.notifyPauseChange(isPaused);
         generalDAO.notifyShuffleChange(isShuffling);
         generalDAO.notifyTrackChange(track);
-
-        /*spotifyAppRemote
-                .getImagesApi()
-                .getImage(track.imageUri, Image.Dimension.LARGE)
-                .setResultCallback(generalDAO::notifyImageChange);*/
     }
 }

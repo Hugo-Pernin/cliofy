@@ -57,7 +57,6 @@ public class PlaylistActivity extends AppCompatActivity {
             generalDAO.hydrateTrack(track);
         }
 
-        //ArrayAdapter<Track> tracksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tracksList);
         ItemAdapter<Track> tracksAdapter = new ItemAdapter<>(this, tracksList);
         tracksListView.setAdapter(tracksAdapter);
         refreshListViewHeight(tracksListView);
