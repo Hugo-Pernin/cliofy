@@ -1,4 +1,4 @@
-package hp.cliofy.Model.DAO;
+package hp.cliofy.Model.Service;
 
 import android.content.Context;
 import android.graphics.Bitmap;

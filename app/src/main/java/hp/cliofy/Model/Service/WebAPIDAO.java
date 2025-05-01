@@ -1,4 +1,4 @@
-package hp.cliofy.Model.DAO;
+package hp.cliofy.Model.Service;
 
 import static androidx.core.content.ContextCompat.startActivity;
 

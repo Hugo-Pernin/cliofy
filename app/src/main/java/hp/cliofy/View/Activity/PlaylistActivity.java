@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.Model.DAO.FacadeService;
+import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.View.Adapter.ItemAdapter;
