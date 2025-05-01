@@ -1,4 +1,4 @@
-package hp.cliofy;
+package hp.cliofy.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +28,9 @@ import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
+import hp.cliofy.ItemAdapter;
 import hp.cliofy.Observer.IObserver;
+import hp.cliofy.R;
 
 /**
  * Main activity of the project

@@ -1,4 +1,4 @@
-package hp.cliofy;
+package hp.cliofy.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -22,8 +21,9 @@ import java.util.List;
 import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
-import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
+import hp.cliofy.ItemAdapter;
+import hp.cliofy.R;
 
 public class ArtistActivity extends AppCompatActivity {
     private Artist artist;
