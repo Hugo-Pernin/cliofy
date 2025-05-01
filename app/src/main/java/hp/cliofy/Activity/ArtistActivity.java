@@ -22,7 +22,7 @@ import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Track;
-import hp.cliofy.ItemAdapter;
+import hp.cliofy.Adapter.ItemAdapter;
 import hp.cliofy.R;
 
 public class ArtistActivity extends AppCompatActivity {

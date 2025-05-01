@@ -1,4 +1,4 @@
-package hp.cliofy;
+package hp.cliofy.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import hp.cliofy.Item.Item;
+import hp.cliofy.R;
 
 public class ItemAdapter<T extends Item> extends ArrayAdapter<T> {
     public ItemAdapter(Context context, List<T> data) {

@@ -28,7 +28,7 @@ import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
-import hp.cliofy.ItemAdapter;
+import hp.cliofy.Adapter.ItemAdapter;
 import hp.cliofy.Observer.IObserver;
 import hp.cliofy.R;
 
