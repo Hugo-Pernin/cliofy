@@ -12,29 +12,39 @@ import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.Model.Observer.Observable;
+import hp.cliofy.Model.Service.AlbumService.IAlbumService;
+import hp.cliofy.Model.Service.ArtistService.IArtistService;
+import hp.cliofy.Model.Service.AuthenticationService.IAuthenticationService;
+import hp.cliofy.Model.Service.PlayerService.IPlayerService;
+import hp.cliofy.Model.Service.PlaylistService.IPlaylistService;
+import hp.cliofy.Model.Service.ServiceFactory.IServiceFactory;
+import hp.cliofy.Model.Service.ServiceFactory.ServiceFactory;
+import hp.cliofy.Model.Service.TrackService.ITrackService;
+import hp.cliofy.Model.Service.UserService.IUserService;
 
 /**
  * Facade service that calls other services depending on the called function
  */
 public class FacadeService extends Observable {
-    /**
-     * DAO communicating with the Spotify Android app
-     */
-    private final AndroidSDKDAO androidSDKDAO;
-
-    /**
-     * DAO communicating with the Spotify Web API
-     */
-    private final WebAPIDAO webAPIDAO;
-
     private static FacadeService instance;
+    private final AndroidSDKDAO androidSDKDAO;
+    private String accessToken;
+    private final IServiceFactory serviceFactory;
+    private IAlbumService albumService;
+    private IArtistService artistService;
+    private IAuthenticationService authenticationService;
+    private IPlayerService playerService;
+    private IPlaylistService playlistService;
+    private ITrackService trackService;
+    private IUserService userService;
 
     /**
      * Creates a facade service
      */
     private FacadeService() {
+        serviceFactory = new ServiceFactory(); // TODO respecter D
+        authenticationService = serviceFactory.createAuthenticationService();
         androidSDKDAO = new AndroidSDKDAO();
-        webAPIDAO = new WebAPIDAO();
     }
 
     /**
@@ -53,7 +63,7 @@ public class FacadeService extends Observable {
      * @param context TODO expliquer
      */
     public void connect(Context context) {
-        webAPIDAO.connect(context);
+        authenticationService.requestAuthorizationCode(context);
     }
 
     /**
@@ -69,7 +79,14 @@ public class FacadeService extends Observable {
      * @param authorizationCode authorization code to store
      */
     public void storeAuthorizationCode(String authorizationCode, Context context) {
-        webAPIDAO.storeAuthorizationCode(authorizationCode);
+        authenticationService.storeAuthorizationCode(authorizationCode);
+        accessToken = authenticationService.getAccessToken();
+        albumService = serviceFactory.createAlbumService(accessToken);
+        artistService = serviceFactory.createArtistService(accessToken);
+        playerService = serviceFactory.createPlayerService(accessToken);
+        playlistService = serviceFactory.createPlaylistService(accessToken);
+        trackService = serviceFactory.createTrackService(accessToken);
+        userService = serviceFactory.createUserService(accessToken);
         connectAndroidSDKDAO(context); // TODO why here?
     }
 
@@ -111,7 +128,7 @@ public class FacadeService extends Observable {
     }
 
     public void playWithOffset(String uri, int offset) {
-        webAPIDAO.playWithOffset(uri, offset);
+        playerService.playWithOffset(uri, offset);
     }
 
     /**
@@ -133,7 +150,7 @@ public class FacadeService extends Observable {
      * @return playlists list of the current user
      */
     public List<Playlist> getPlaylistsList() {
-        return webAPIDAO.getPlaylistsList();
+        return userService.getPlaylistsList();
     }
 
     /**
@@ -141,39 +158,39 @@ public class FacadeService extends Observable {
      * @return top artists of the current user
      */
     public List<Artist> getTopArtists() {
-        return webAPIDAO.getTopArtists();
+        return userService.getTopArtists();
     }
 
     public void hydrateTrack(Track track) {
-        webAPIDAO.hydrateTrack(track);
+        trackService.hydrateTrack(track);
     }
 
     public void hydrateAlbum(Album album) {
-        webAPIDAO.hydrateAlbum(album);
+        albumService.hydrateAlbum(album);
     }
 
     public void hydrateArtist(Artist artist) {
-        webAPIDAO.hydrateArtist(artist);
+        artistService.hydrateArtist(artist);
     }
 
     public void hydratePlaylist(Playlist playlist) {
-        webAPIDAO.hydratePlaylist(playlist);
+        playlistService.hydratePlaylist(playlist);
     }
 
     public List<Album> getArtistAlbums(Artist artist, String type) {
-        return webAPIDAO.getArtistAlbums(artist, type);
+        return artistService.getArtistAlbums(artist, type);
     }
 
     public List<Track> getArtistTopTracks(Artist artist) {
-        return webAPIDAO.getArtistTopTracks(artist);
+        return artistService.getArtistTopTracks(artist);
     }
 
     public List<Track> getAlbumTracks(Album album) {
-        return webAPIDAO.getAlbumTracks(album);
+        return albumService.getAlbumTracks(album);
     }
 
     public List<Track> getPlaylistTracks(Playlist playlist) {
-        return webAPIDAO.getPlaylistTracks(playlist);
+        return playlistService.getPlaylistTracks(playlist);
     }
 
     public Bitmap getBitmapImageFromUrl(String url) {
