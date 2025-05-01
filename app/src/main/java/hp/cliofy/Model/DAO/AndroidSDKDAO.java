@@ -37,10 +37,10 @@ class AndroidSDKDAO {
     /**
      * Connects the DAO to the Spotify Android app
      * @param context TODO expliquer
-     * @param generalDAO TODO expliquer
+     * @param facadeService TODO expliquer
      * TODO commenter
      */
-    public void connect(Context context, GeneralDAO generalDAO) {
+    public void connect(Context context, FacadeService facadeService) {
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
@@ -56,7 +56,7 @@ class AndroidSDKDAO {
                         Toast.makeText(context, "Connecté au SDK", Toast.LENGTH_SHORT).show();
                         AndroidSDKDAO.this.spotifyAppRemote.getPlayerApi()
                                 .subscribeToPlayerState()
-                                .setEventCallback(playerState -> refreshPlayerState(playerState, generalDAO));
+                                .setEventCallback(playerState -> refreshPlayerState(playerState, facadeService));
                     }
 
                     @Override
@@ -132,10 +132,10 @@ class AndroidSDKDAO {
     /**
      * Refreshes the state of the player (pause state, shuffling state, track, image)
      * @param playerState TODO expliquer
-     * @param generalDAO TODO expliquer
+     * @param facadeService TODO expliquer
      * TODO commenter
      */
-    private void refreshPlayerState(PlayerState playerState, GeneralDAO generalDAO) {
+    private void refreshPlayerState(PlayerState playerState, FacadeService facadeService) {
         isPaused = playerState.isPaused;
         boolean isShuffling = playerState.playbackOptions.isShuffling;
 
@@ -144,8 +144,8 @@ class AndroidSDKDAO {
 
         Track track = new Track(name, uri);
 
-        generalDAO.notifyPauseChange(isPaused);
-        generalDAO.notifyShuffleChange(isShuffling);
-        generalDAO.notifyTrackChange(track);
+        facadeService.notifyPauseChange(isPaused);
+        facadeService.notifyShuffleChange(isShuffling);
+        facadeService.notifyTrackChange(track);
     }
 }

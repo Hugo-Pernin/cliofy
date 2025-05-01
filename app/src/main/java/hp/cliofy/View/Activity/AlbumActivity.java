@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.DAO.FacadeService;
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.View.Adapter.ItemAdapter;
@@ -24,7 +24,7 @@ import hp.cliofy.R;
 
 public class AlbumActivity extends AppCompatActivity {
     private Album album;
-    private GeneralDAO generalDAO;
+    private FacadeService facadeService;
     private ImageView albumCover;
     private TextView informations;
     private ListView tracksListView;
@@ -35,13 +35,13 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
 
-        generalDAO = GeneralDAO.getInstance();
+        facadeService = FacadeService.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Gson gson = new Gson();
             album = gson.fromJson(bundle.getString("album"), Album.class);
-            generalDAO.hydrateAlbum(album);
+            facadeService.hydrateAlbum(album);
         }
 
         albumCover = findViewById(R.id.albumCover);
@@ -54,11 +54,11 @@ public class AlbumActivity extends AppCompatActivity {
                 album.getReleaseDate());
 
         tracksListView = findViewById(R.id.tracksListView);
-        tracksList = generalDAO.getAlbumTracks(album);
+        tracksList = facadeService.getAlbumTracks(album);
 
         // TODO enlever l'hydratation des activités
         for (Track track : tracksList) {
-            generalDAO.hydrateTrack(track);
+            facadeService.hydrateTrack(track);
         }
 
         ItemAdapter<Track> tracksAdapter = new ItemAdapter<>(this, tracksList);
@@ -69,7 +69,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.playWithOffset(album.getUri(), i);
+        facadeService.playWithOffset(album.getUri(), i);
     }
 
     private void refreshListViewHeight(ListView listView) {

@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.DAO.FacadeService;
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Track;
@@ -28,7 +28,7 @@ import hp.cliofy.R;
 public class ArtistActivity extends AppCompatActivity {
     private Artist artist;
 
-    private GeneralDAO generalDAO;
+    private FacadeService facadeService;
 
     private ImageView artistImage;
 
@@ -51,13 +51,13 @@ public class ArtistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist);
 
-        generalDAO = GeneralDAO.getInstance();
+        facadeService = FacadeService.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Gson gson = new Gson();
             artist = gson.fromJson(bundle.getString("artist"), Artist.class);
-            generalDAO.hydrateArtist(artist);
+            facadeService.hydrateArtist(artist);
         }
 
         artistImage = findViewById(R.id.artistImage);
@@ -69,11 +69,11 @@ public class ArtistActivity extends AppCompatActivity {
                 "Genres: " + artist.getGenres());
 
         topTracksListView = findViewById(R.id.topTracksListView);
-        topTracksList = generalDAO.getArtistTopTracks(artist);
+        topTracksList = facadeService.getArtistTopTracks(artist);
 
         // TODO enlever l'hydratation des activités
         for (Track track : topTracksList) {
-            generalDAO.hydrateTrack(track);
+            facadeService.hydrateTrack(track);
         }
 
         ItemAdapter<Track> topTracksAdapter = new ItemAdapter<>(this, topTracksList);
@@ -82,21 +82,21 @@ public class ArtistActivity extends AppCompatActivity {
         topTracksListView.setOnItemClickListener(this::playTrack);
 
         albumsListView = findViewById(R.id.albumsListView);
-        albumsList = generalDAO.getArtistAlbums(artist, "album");
+        albumsList = facadeService.getArtistAlbums(artist, "album");
         ItemAdapter<Album> albumsAdapter = new ItemAdapter<>(this, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
         albumsListView.setOnItemClickListener(this::openAlbumActivity);
 
         singlesListView = findViewById(R.id.singlesListView);
-        singlesList = generalDAO.getArtistAlbums(artist, "single");
+        singlesList = facadeService.getArtistAlbums(artist, "single");
         ItemAdapter<Album> singlesAdapter = new ItemAdapter<>(this, singlesList);
         singlesListView.setAdapter(singlesAdapter);
         refreshListViewHeight(singlesListView);
         singlesListView.setOnItemClickListener(this::openSingleActivity);
 
         compilationsListView = findViewById(R.id.compilationsListView);
-        compilationsList = generalDAO.getArtistAlbums(artist, "compilation");
+        compilationsList = facadeService.getArtistAlbums(artist, "compilation");
         ItemAdapter<Album> compilationsAdapter = new ItemAdapter<>(this, compilationsList);
         compilationsListView.setAdapter(compilationsAdapter);
         refreshListViewHeight(compilationsListView);
@@ -106,7 +106,7 @@ public class ArtistActivity extends AppCompatActivity {
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.play(topTracksList.get(i).getUri());
+        facadeService.play(topTracksList.get(i).getUri());
     }
 
     // TODO refactoriser

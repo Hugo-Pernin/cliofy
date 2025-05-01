@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.DAO.FacadeService;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.View.Adapter.ItemAdapter;
@@ -24,7 +24,7 @@ import hp.cliofy.R;
 
 public class PlaylistActivity extends AppCompatActivity {
     private Playlist playlist;
-    private GeneralDAO generalDAO;
+    private FacadeService facadeService;
     private ImageView playlistCover;
     private TextView informations;
     private ListView tracksListView;
@@ -35,13 +35,13 @@ public class PlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
 
-        generalDAO = GeneralDAO.getInstance();
+        facadeService = FacadeService.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Gson gson = new Gson();
             playlist = gson.fromJson(bundle.getString("playlist"), Playlist.class);
-            generalDAO.hydratePlaylist(playlist);
+            facadeService.hydratePlaylist(playlist);
         }
 
         playlistCover = findViewById(R.id.playlistCover);
@@ -51,11 +51,11 @@ public class PlaylistActivity extends AppCompatActivity {
         informations.setText(playlist.toString() + " by " + playlist.getOwner());
 
         tracksListView = findViewById(R.id.tracksListView);
-        tracksList = generalDAO.getPlaylistTracks(playlist);
+        tracksList = facadeService.getPlaylistTracks(playlist);
 
         // TODO enlever l'hydratation des activités
         for (Track track : tracksList) {
-            generalDAO.hydrateTrack(track);
+            facadeService.hydrateTrack(track);
         }
 
         ItemAdapter<Track> tracksAdapter = new ItemAdapter<>(this, tracksList);
@@ -66,7 +66,7 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.playWithOffset(playlist.getUri(), i);
+        facadeService.playWithOffset(playlist.getUri(), i);
     }
 
     private void refreshListViewHeight(ListView listView) {

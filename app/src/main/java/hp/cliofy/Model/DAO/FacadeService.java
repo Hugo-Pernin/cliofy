@@ -14,9 +14,9 @@ import hp.cliofy.Model.Item.Track;
 import hp.cliofy.Model.Observer.Observable;
 
 /**
- * General DAO that serves as a facade to call other DAOs depending on the called function
+ * Facade service that calls other services depending on the called function
  */
-public class GeneralDAO extends Observable {
+public class FacadeService extends Observable {
     /**
      * DAO communicating with the Spotify Android app
      */
@@ -27,12 +27,12 @@ public class GeneralDAO extends Observable {
      */
     private final WebAPIDAO webAPIDAO;
 
-    private static GeneralDAO instance;
+    private static FacadeService instance;
 
     /**
-     * Creates a general DAO
+     * Creates a facade service
      */
-    private GeneralDAO() {
+    private FacadeService() {
         androidSDKDAO = new AndroidSDKDAO();
         webAPIDAO = new WebAPIDAO();
     }
@@ -41,9 +41,9 @@ public class GeneralDAO extends Observable {
      * Gets the singleton instance
      * @return the singleton instance
      */
-    public static GeneralDAO getInstance() {
+    public static FacadeService getInstance() {
         if (instance == null) {
-            instance = new GeneralDAO();
+            instance = new FacadeService();
         }
         return instance;
     }

@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.DAO.FacadeService;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     /**
      * General DAO communicating with the different Spotify APIs
      */
-    private GeneralDAO generalDAO;
+    private FacadeService facadeService;
 
     /**
      * pause/resume button
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         topArtistsListView.setAdapter(topArtistsAdapter);
         topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 
-        generalDAO = GeneralDAO.getInstance();
-        generalDAO.addObserver(this);
-        generalDAO.connect(this);
+        facadeService = FacadeService.getInstance();
+        facadeService.addObserver(this);
+        facadeService.connect(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
     }
 
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        generalDAO.removeObserver(this);
-        generalDAO.disconnect();
+        facadeService.removeObserver(this);
+        facadeService.disconnect();
     }
 
     // TODO commenter
@@ -179,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             String authorizationCode = uri.getQueryParameter("code");
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
-                generalDAO.storeAuthorizationCode(authorizationCode, this);
-                List<Playlist> playlists = generalDAO.getPlaylistsList();
+                facadeService.storeAuthorizationCode(authorizationCode, this);
+                List<Playlist> playlists = facadeService.getPlaylistsList();
                 playlistsList.addAll(playlists);
-                List<Artist> topArtists = generalDAO.getTopArtists();
+                List<Artist> topArtists = facadeService.getTopArtists();
                 topArtistsList.addAll(topArtists);
                 refreshListViewHeight(playlistsListView);
                 refreshListViewHeight(topArtistsListView);
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      * @param v TODO expliquer
      */
     private void pauseResumeClick(View v) {
-        generalDAO.pauseResume();
+        facadeService.pauseResume();
     }
 
     /**
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      * @param v TODO expliquer
      */
     private void skipPreviousClick(View v) {
-        generalDAO.skipPrevious();
+        facadeService.skipPrevious();
     }
 
     /**
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      * @param v TODO expliquer
      */
     private void skipNextClick(View v) {
-        generalDAO.skipNext();
+        facadeService.skipNext();
     }
 
     /**
@@ -244,10 +244,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      */
     private void shuffleClick(View v) {
         if (shuffleSwitch.isChecked()) {
-            generalDAO.enableShuffle();
+            facadeService.enableShuffle();
         }
         else {
-            generalDAO.disableShuffle();
+            facadeService.disableShuffle();
         }
     }
 
@@ -269,14 +269,14 @@ public class MainActivity extends AppCompatActivity implements IObserver {
 
     @Override
     public void trackChange(Track track) {
-        generalDAO.hydrateTrack(track);
+        facadeService.hydrateTrack(track);
         informations.setText(
                 track.toString() + "\n" +
                 track.getArtist().toString() + "\n" +
                 track.getAlbum().toString()
         );
-        generalDAO.hydrateAlbum(track.getAlbum());
-        albumCover.setImageBitmap(generalDAO.getBitmapImageFromUrl(track.getImageUrl()));
+        facadeService.hydrateAlbum(track.getAlbum());
+        albumCover.setImageBitmap(facadeService.getBitmapImageFromUrl(track.getImageUrl()));
     }
 
     @Override
