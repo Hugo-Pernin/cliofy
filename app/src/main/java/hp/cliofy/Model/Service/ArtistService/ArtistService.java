@@ -15,6 +15,7 @@ import java.util.List;
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Track;
+import hp.cliofy.Model.Service.ApiClient;
 
 public class ArtistService implements IArtistService {
     private final String PATH = "https://api.spotify.com/v1/artists/";
@@ -27,7 +28,7 @@ public class ArtistService implements IArtistService {
     @Override
     public void hydrateArtist(Artist artist) {
         try {
-            JSONObject json = getRequest(PATH + artist.getId());
+            JSONObject json = ApiClient.getRequest(PATH + artist.getId());
             artist.setFollowersTotal(json.getJSONObject("followers").getInt("total"));
 
             List<String> genres = new ArrayList<>();
@@ -46,7 +47,7 @@ public class ArtistService implements IArtistService {
         List<Album> albums = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest(PATH + artist.getId() + "/albums?limit=50&include_groups=" + type);
+            JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/albums?limit=50&include_groups=" + type);
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
@@ -68,7 +69,7 @@ public class ArtistService implements IArtistService {
         List<Track> topTracks = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest(PATH + artist.getId() + "/top-tracks");
+            JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/top-tracks");
             JSONArray array = json.getJSONArray("tracks");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
@@ -83,47 +84,5 @@ public class ArtistService implements IArtistService {
         }
 
         return topTracks;
-    }
-
-    private JSONObject getRequest(String endpoint) {
-        final JSONObject[] json = {null}; // A one-entry array is necessary
-
-        Thread thread = new Thread(() -> {
-            try {
-                HttpURLConnection urlConnection = null;
-                try {
-                    URL url = new URL(endpoint);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-                    urlConnection.setRequestMethod("GET");
-
-                    int code = urlConnection.getResponseCode();
-                    if (code !=  200) {
-                        throw new IOException("Invalid response from server: " + code);
-                    }
-
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    json[0] = new JSONObject(rd.readLine());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        thread.start();
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return json[0];
     }
 }

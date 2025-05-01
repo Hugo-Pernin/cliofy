@@ -14,6 +14,7 @@ import java.util.List;
 
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Track;
+import hp.cliofy.Model.Service.ApiClient;
 
 public class AlbumService implements IAlbumService {
     private final String PATH = "https://api.spotify.com/v1/albums/";
@@ -26,7 +27,7 @@ public class AlbumService implements IAlbumService {
     @Override
     public void hydrateAlbum(Album album) {
         try {
-            JSONObject json = getRequest(PATH + album.getId());
+            JSONObject json = ApiClient.getRequest(PATH + album.getId());
             album.setAlbumType(json.getString("album_type"));
             album.setTotalTracks(json.getInt("total_tracks"));
             album.setReleaseDate(json.getString("release_date"));
@@ -40,7 +41,7 @@ public class AlbumService implements IAlbumService {
         List<Track> tracks = new ArrayList<>();
 
         try {
-            JSONObject json = getRequest(PATH + album.getId() + "/tracks?limit=50");
+            JSONObject json = ApiClient.getRequest(PATH + album.getId() + "/tracks?limit=50");
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
@@ -54,47 +55,5 @@ public class AlbumService implements IAlbumService {
         }
 
         return tracks;
-    }
-
-    private JSONObject getRequest(String endpoint) {
-        final JSONObject[] json = {null}; // A one-entry array is necessary
-
-        Thread thread = new Thread(() -> {
-            try {
-                HttpURLConnection urlConnection = null;
-                try {
-                    URL url = new URL(endpoint);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-                    urlConnection.setRequestMethod("GET");
-
-                    int code = urlConnection.getResponseCode();
-                    if (code !=  200) {
-                        throw new IOException("Invalid response from server: " + code);
-                    }
-
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    json[0] = new JSONObject(rd.readLine());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        thread.start();
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return json[0];
     }
 }

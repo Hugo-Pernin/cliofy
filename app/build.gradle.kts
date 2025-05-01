@@ -40,6 +40,7 @@ dependencies {
     implementation(files("../libs/spotify-app-remote-release.aar"))
     implementation("com.google.code.gson:gson:2.6.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

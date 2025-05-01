@@ -81,6 +81,8 @@ public class FacadeService extends Observable {
     public void storeAuthorizationCode(String authorizationCode, Context context) {
         authenticationService.storeAuthorizationCode(authorizationCode);
         accessToken = authenticationService.getAccessToken();
+        ApiClient.setAccessToken(accessToken);
+        // Peut être enlevé
         albumService = serviceFactory.createAlbumService(accessToken);
         artistService = serviceFactory.createArtistService(accessToken);
         playerService = serviceFactory.createPlayerService(accessToken);
