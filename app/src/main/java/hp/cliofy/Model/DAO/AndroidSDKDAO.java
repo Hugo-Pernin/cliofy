@@ -1,4 +1,4 @@
-package hp.cliofy.DAO;
+package hp.cliofy.Model.DAO;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -8,7 +8,7 @@ import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.PlayerState;
 
-import hp.cliofy.Item.Track;
+import hp.cliofy.Model.Item.Track;
 
 /**
  * DAO communicating with the Spotify Android app
@@ -142,7 +142,7 @@ class AndroidSDKDAO {
         String name = playerState.track.name;
         String uri = playerState.track.uri;
 
-        hp.cliofy.Item.Track track = new Track(name, uri);
+        Track track = new Track(name, uri);
 
         generalDAO.notifyPauseChange(isPaused);
         generalDAO.notifyShuffleChange(isShuffling);

@@ -1,4 +1,4 @@
-package hp.cliofy.Activity;
+package hp.cliofy.View.Activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,16 +16,16 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.DAO.GeneralDAO;
-import hp.cliofy.Item.Playlist;
-import hp.cliofy.Item.Track;
-import hp.cliofy.Adapter.ItemAdapter;
+import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.Item.Album;
+import hp.cliofy.Model.Item.Track;
+import hp.cliofy.View.Adapter.ItemAdapter;
 import hp.cliofy.R;
 
-public class PlaylistActivity extends AppCompatActivity {
-    private Playlist playlist;
+public class AlbumActivity extends AppCompatActivity {
+    private Album album;
     private GeneralDAO generalDAO;
-    private ImageView playlistCover;
+    private ImageView albumCover;
     private TextView informations;
     private ListView tracksListView;
     private List<Track> tracksList;
@@ -33,25 +33,28 @@ public class PlaylistActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist);
+        setContentView(R.layout.activity_album);
 
         generalDAO = GeneralDAO.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Gson gson = new Gson();
-            playlist = gson.fromJson(bundle.getString("playlist"), Playlist.class);
-            generalDAO.hydratePlaylist(playlist);
+            album = gson.fromJson(bundle.getString("album"), Album.class);
+            generalDAO.hydrateAlbum(album);
         }
 
-        playlistCover = findViewById(R.id.playlistCover);
-        Glide.with(this).load(playlist.getImageUrl()).into(playlistCover);
+        albumCover = findViewById(R.id.albumCover);
+        Glide.with(this).load(album.getImageUrl()).into(albumCover);
 
         informations = findViewById(R.id.informations);
-        informations.setText(playlist.toString() + " by " + playlist.getOwner());
+        informations.setText(album.toString() + "\n" +
+                "Type: " + album.getAlbumType() + "\n" +
+                album.getTotalTracks() + " tracks\n" +
+                album.getReleaseDate());
 
         tracksListView = findViewById(R.id.tracksListView);
-        tracksList = generalDAO.getPlaylistTracks(playlist);
+        tracksList = generalDAO.getAlbumTracks(album);
 
         // TODO enlever l'hydratation des activités
         for (Track track : tracksList) {
@@ -66,7 +69,7 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
-        generalDAO.playWithOffset(playlist.getUri(), i);
+        generalDAO.playWithOffset(album.getUri(), i);
     }
 
     private void refreshListViewHeight(ListView listView) {

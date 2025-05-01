@@ -1,4 +1,4 @@
-package hp.cliofy.Activity;
+package hp.cliofy.View.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,12 +24,12 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import hp.cliofy.DAO.GeneralDAO;
-import hp.cliofy.Item.Artist;
-import hp.cliofy.Item.Playlist;
-import hp.cliofy.Item.Track;
-import hp.cliofy.Adapter.ItemAdapter;
-import hp.cliofy.Observer.IObserver;
+import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.Item.Artist;
+import hp.cliofy.Model.Item.Playlist;
+import hp.cliofy.Model.Item.Track;
+import hp.cliofy.View.Adapter.ItemAdapter;
+import hp.cliofy.Model.Observer.IObserver;
 import hp.cliofy.R;
 
 /**

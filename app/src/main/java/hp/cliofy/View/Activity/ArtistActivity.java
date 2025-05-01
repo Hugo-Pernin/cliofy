@@ -1,4 +1,4 @@
-package hp.cliofy.Activity;
+package hp.cliofy.View.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +18,11 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import hp.cliofy.DAO.GeneralDAO;
-import hp.cliofy.Item.Album;
-import hp.cliofy.Item.Artist;
-import hp.cliofy.Item.Track;
-import hp.cliofy.Adapter.ItemAdapter;
+import hp.cliofy.Model.DAO.GeneralDAO;
+import hp.cliofy.Model.Item.Album;
+import hp.cliofy.Model.Item.Artist;
+import hp.cliofy.Model.Item.Track;
+import hp.cliofy.View.Adapter.ItemAdapter;
 import hp.cliofy.R;
 
 public class ArtistActivity extends AppCompatActivity {

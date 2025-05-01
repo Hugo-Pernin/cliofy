@@ -1,4 +1,4 @@
-package hp.cliofy.DAO;
+package hp.cliofy.Model.DAO;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,11 +7,11 @@ import android.graphics.BitmapFactory;
 import java.net.URL;
 import java.util.List;
 
-import hp.cliofy.Item.Album;
-import hp.cliofy.Item.Artist;
-import hp.cliofy.Item.Playlist;
-import hp.cliofy.Item.Track;
-import hp.cliofy.Observer.Observable;
+import hp.cliofy.Model.Item.Album;
+import hp.cliofy.Model.Item.Artist;
+import hp.cliofy.Model.Item.Playlist;
+import hp.cliofy.Model.Item.Track;
+import hp.cliofy.Model.Observer.Observable;
 
 /**
  * General DAO that serves as a facade to call other DAOs depending on the called function

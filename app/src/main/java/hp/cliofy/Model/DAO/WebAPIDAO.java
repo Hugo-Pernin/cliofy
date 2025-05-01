@@ -1,4 +1,4 @@
-package hp.cliofy.DAO;
+package hp.cliofy.Model.DAO;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -29,10 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hp.cliofy.Item.Album;
-import hp.cliofy.Item.Artist;
-import hp.cliofy.Item.Playlist;
-import hp.cliofy.Item.Track;
+import hp.cliofy.Model.Item.Album;
+import hp.cliofy.Model.Item.Artist;
+import hp.cliofy.Model.Item.Playlist;
+import hp.cliofy.Model.Item.Track;
 
 /**
  * DAO communicating with the Spotify Web API

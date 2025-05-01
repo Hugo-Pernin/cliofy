@@ -1,8 +1,8 @@
-package hp.cliofy.Observer;
+package hp.cliofy.Model.Observer;
 
 import android.graphics.Bitmap;
 
-import hp.cliofy.Item.Track;
+import hp.cliofy.Model.Item.Track;
 
 /**
  * Interface for an observer / a subscriber

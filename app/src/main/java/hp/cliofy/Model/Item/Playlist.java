@@ -1,4 +1,4 @@
-package hp.cliofy.Item;
+package hp.cliofy.Model.Item;
 
 /**
  * A simplified playlist

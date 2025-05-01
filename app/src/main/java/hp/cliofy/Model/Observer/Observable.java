@@ -1,11 +1,11 @@
-package hp.cliofy.Observer;
+package hp.cliofy.Model.Observer;
 
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import hp.cliofy.Item.Track;
+import hp.cliofy.Model.Item.Track;
 
 /**
  * Class for an observable / a subject

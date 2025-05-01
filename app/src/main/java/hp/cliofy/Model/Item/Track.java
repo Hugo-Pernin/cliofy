@@ -1,4 +1,4 @@
-package hp.cliofy.Item;
+package hp.cliofy.Model.Item;
 
 import androidx.annotation.NonNull;
 
