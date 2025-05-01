@@ -11,7 +11,7 @@ import hp.cliofy.Item.Album;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
-import hp.cliofy.Observable;
+import hp.cliofy.Observer.Observable;
 
 /**
  * General DAO that serves as a facade to call other DAOs depending on the called function

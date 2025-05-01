@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -29,6 +28,7 @@ import hp.cliofy.DAO.GeneralDAO;
 import hp.cliofy.Item.Artist;
 import hp.cliofy.Item.Playlist;
 import hp.cliofy.Item.Track;
+import hp.cliofy.Observer.IObserver;
 
 /**
  * Main activity of the project

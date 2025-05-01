@@ -1,4 +1,4 @@
-package hp.cliofy;
+package hp.cliofy.Observer;
 
 import android.graphics.Bitmap;
 
