@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.Model.Service.ApiClient;
@@ -36,6 +37,17 @@ public class PlaylistService implements  IPlaylistService {
                 String name = object.getString("name");
                 String uri = object.getString("uri");
                 Track track = new Track(name, uri);
+
+                JSONObject albumObject = object.getJSONObject("album");
+                String albumName = albumObject.getString("name");
+                String albumUri = albumObject.getString("uri");
+                String albumImageUrl = albumObject.getJSONArray("images").getJSONObject(0).getString("url");
+                String albumType = albumObject.getString("album_type");
+                int albumTotalTracks = albumObject.getInt("total_tracks");
+                String albumReleaseDate = albumObject.getString("release_date");
+                Album album = new Album(albumName, albumUri, albumImageUrl, albumType, albumTotalTracks, albumReleaseDate);
+                track.setAlbum(album);
+
                 tracks.add(track);
             }
         } catch (JSONException e) {

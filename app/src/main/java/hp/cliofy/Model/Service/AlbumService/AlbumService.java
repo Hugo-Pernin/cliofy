@@ -25,18 +25,6 @@ public class AlbumService implements IAlbumService {
     }
 
     @Override
-    public void hydrateAlbum(Album album) {
-        try {
-            JSONObject json = ApiClient.getRequest(PATH + album.getId());
-            album.setAlbumType(json.getString("album_type"));
-            album.setTotalTracks(json.getInt("total_tracks"));
-            album.setReleaseDate(json.getString("release_date"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public List<Track> getAlbumTracks(Album album) {
         List<Track> tracks = new ArrayList<>();
 

@@ -41,7 +41,6 @@ public class AlbumActivity extends AppCompatActivity {
         if (bundle != null) {
             Gson gson = new Gson();
             album = gson.fromJson(bundle.getString("album"), Album.class);
-            facadeService.hydrateAlbum(album);
         }
 
         albumCover = findViewById(R.id.albumCover);

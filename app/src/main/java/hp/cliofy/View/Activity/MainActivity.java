@@ -276,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements IObserver {
                 track.getArtist().getName() + "\n" +
                 track.getAlbum().getName()
         );
-        facadeService.hydrateAlbum(track.getAlbum());
         albumCover.setImageBitmap(facadeService.getBitmapImageFromUrl(track.getImageUrl()));
     }
 

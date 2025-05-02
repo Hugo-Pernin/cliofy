@@ -4,32 +4,20 @@ package hp.cliofy.Model.Item;
  * A simplified album
  */
 public class Album extends Item {
-    private String albumType; // album, single or compilation
-    private int totalTracks;
-    private String releaseDate;
+    private final String albumType; // album, single or compilation
+    private final int totalTracks;
+    private final String releaseDate;
 
     public String getAlbumType() {
         return albumType;
-    }
-
-    public void setAlbumType(String albumType) {
-        this.albumType = albumType;
     }
 
     public int getTotalTracks() {
         return totalTracks;
     }
 
-    public void setTotalTracks(int totalTracks) {
-        this.totalTracks = totalTracks;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getId() {
@@ -42,7 +30,10 @@ public class Album extends Item {
      * @param uri  uri of the album
      * @param imageUrl url of the image of the album
      */
-    public Album(String name, String uri, String imageUrl) {
+    public Album(String name, String uri, String imageUrl, String albumType, int totalTracks, String releaseDate) {
         super(name, uri, imageUrl);
+        this.albumType = albumType;
+        this.totalTracks = totalTracks;
+        this.releaseDate = releaseDate;
     }
 }

@@ -167,10 +167,6 @@ public class FacadeService extends Observable {
         trackService.hydrateTrack(track);
     }
 
-    public void hydrateAlbum(Album album) {
-        albumService.hydrateAlbum(album);
-    }
-
     public void hydrateArtist(Artist artist) {
         artistService.hydrateArtist(artist);
     }

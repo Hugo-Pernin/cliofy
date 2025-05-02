@@ -7,6 +7,5 @@ import hp.cliofy.Model.Item.Track;
 
 // TODO commenter les interfaces
 public interface IAlbumService {
-    void hydrateAlbum(Album album);
     List<Track> getAlbumTracks(Album album);
 }

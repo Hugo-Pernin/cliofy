@@ -29,7 +29,10 @@ public class TrackService implements ITrackService {
             track.setAlbum(new Album(
                     json.getJSONObject("album").getString("name"),
                     json.getJSONObject("album").getString("uri"),
-                    json.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url")
+                    json.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"),
+                    json.getJSONObject("album").getString("album_type"),
+                    json.getJSONObject("album").getInt("total_tracks"),
+                    json.getJSONObject("album").getString("release_date")
             ));
             track.setArtist(new Artist(
                     json.getJSONArray("artists").getJSONObject(0).getString("name"),

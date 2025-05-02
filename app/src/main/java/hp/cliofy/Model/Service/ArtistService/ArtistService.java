@@ -54,7 +54,10 @@ public class ArtistService implements IArtistService {
                 String name = object.getString("name");
                 String uri = object.getString("uri");
                 String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
-                Album album = new Album(name, uri, imageUrl);
+                String albumType = object.getString("album_type");
+                int totalTracks = object.getInt("total_tracks");
+                String releaseDate = object.getString("release_date");
+                Album album = new Album(name, uri, imageUrl, albumType, totalTracks, releaseDate);
                 albums.add(album);
             }
         } catch (JSONException e) {
@@ -77,6 +80,17 @@ public class ArtistService implements IArtistService {
                 String uri = object.getString("uri");
                 String imageUrl = object.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url");
                 Track track = new Track(name, uri, imageUrl);
+
+                JSONObject albumObject = object.getJSONObject("album");
+                String albumName = albumObject.getString("name");
+                String albumUri = albumObject.getString("uri");
+                String albumImageUrl = albumObject.getJSONArray("images").getJSONObject(0).getString("url");
+                String albumType = albumObject.getString("album_type");
+                int albumTotalTracks = albumObject.getInt("total_tracks");
+                String albumReleaseDate = albumObject.getString("release_date");
+                Album album = new Album(albumName, albumUri, albumImageUrl, albumType, albumTotalTracks, albumReleaseDate);
+                track.setAlbum(album);
+
                 topTracks.add(track);
             }
         } catch (JSONException e) {
