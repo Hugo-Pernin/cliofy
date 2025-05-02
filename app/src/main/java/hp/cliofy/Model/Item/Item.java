@@ -10,6 +10,10 @@ public abstract class Item {
     private final String uri;
     private String imageUrl;
 
+    public String getName() {
+        return this.name;
+    }
+
     /**
      * Returns the uri of the item
      * @return the uri of the item

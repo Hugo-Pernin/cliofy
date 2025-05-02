@@ -195,6 +195,11 @@ public class FacadeService extends Observable {
         return playlistService.getPlaylistTracks(playlist);
     }
 
+    // uri ou Item ?
+    public void addItemToPlaybackQueue(String uri) {
+        // TODO implémenter
+    }
+
     public Bitmap getBitmapImageFromUrl(String url) {
         final Bitmap[] image = new Bitmap[1]; // A one-entry array is necessary
 

@@ -22,8 +22,9 @@ import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Track;
-import hp.cliofy.View.Adapter.ItemAdapter;
+import hp.cliofy.View.Adapter.AlbumAdapter;
 import hp.cliofy.R;
+import hp.cliofy.View.Adapter.TrackArtistAdapter;
 
 public class ArtistActivity extends AppCompatActivity {
     private Artist artist;
@@ -76,28 +77,28 @@ public class ArtistActivity extends AppCompatActivity {
             facadeService.hydrateTrack(track);
         }
 
-        ItemAdapter<Track> topTracksAdapter = new ItemAdapter<>(this, topTracksList);
+        TrackArtistAdapter topTracksAdapter = new TrackArtistAdapter(this, topTracksList);
         topTracksListView.setAdapter(topTracksAdapter);
         refreshListViewHeight(topTracksListView);
         topTracksListView.setOnItemClickListener(this::playTrack);
 
         albumsListView = findViewById(R.id.albumsListView);
         albumsList = facadeService.getArtistAlbums(artist, "album");
-        ItemAdapter<Album> albumsAdapter = new ItemAdapter<>(this, albumsList);
+        AlbumAdapter albumsAdapter = new AlbumAdapter(this, albumsList);
         albumsListView.setAdapter(albumsAdapter);
         refreshListViewHeight(albumsListView);
         albumsListView.setOnItemClickListener(this::openAlbumActivity);
 
         singlesListView = findViewById(R.id.singlesListView);
         singlesList = facadeService.getArtistAlbums(artist, "single");
-        ItemAdapter<Album> singlesAdapter = new ItemAdapter<>(this, singlesList);
+        AlbumAdapter singlesAdapter = new AlbumAdapter(this, singlesList);
         singlesListView.setAdapter(singlesAdapter);
         refreshListViewHeight(singlesListView);
         singlesListView.setOnItemClickListener(this::openSingleActivity);
 
         compilationsListView = findViewById(R.id.compilationsListView);
         compilationsList = facadeService.getArtistAlbums(artist, "compilation");
-        ItemAdapter<Album> compilationsAdapter = new ItemAdapter<>(this, compilationsList);
+        AlbumAdapter compilationsAdapter = new AlbumAdapter(this, compilationsList);
         compilationsListView.setAdapter(compilationsAdapter);
         refreshListViewHeight(compilationsListView);
         compilationsListView.setOnItemClickListener(this::openCompilationActivity);

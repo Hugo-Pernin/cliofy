@@ -14,28 +14,28 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import hp.cliofy.Model.Item.Item;
+import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.R;
 
-public class ItemAdapter<T extends Item> extends ArrayAdapter<T> {
-    public ItemAdapter(Context context, List<T> data) {
+public class ArtistAdapter extends ArrayAdapter<Artist> {
+    public ArtistAdapter(Context context, List<Artist> data) {
         super(context, 0, data);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        Item item = getItem(position);
+        Artist artist = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_artist, parent, false);
         }
 
-        ImageView itemImage = convertView.findViewById(R.id.itemImage);
-        TextView itemName = convertView.findViewById(R.id.itemName);
+        ImageView artistImage = convertView.findViewById(R.id.artistImage);
+        TextView artistName = convertView.findViewById(R.id.artistName);
 
-        Glide.with(this.getContext()).load(item.getImageUrl()).into(itemImage);
-        itemName.setText(item.toString());
+        Glide.with(this.getContext()).load(artist.getImageUrl()).into(artistImage);
+        artistName.setText(artist.toString());
 
         return convertView;
     }

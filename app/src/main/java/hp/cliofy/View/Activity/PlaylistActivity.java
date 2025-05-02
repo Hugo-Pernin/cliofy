@@ -19,8 +19,8 @@ import java.util.List;
 import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
-import hp.cliofy.View.Adapter.ItemAdapter;
 import hp.cliofy.R;
+import hp.cliofy.View.Adapter.TrackPlaylistAdapter;
 
 public class PlaylistActivity extends AppCompatActivity {
     private Playlist playlist;
@@ -58,7 +58,7 @@ public class PlaylistActivity extends AppCompatActivity {
             facadeService.hydrateTrack(track);
         }
 
-        ItemAdapter<Track> tracksAdapter = new ItemAdapter<>(this, tracksList);
+        TrackPlaylistAdapter tracksAdapter = new TrackPlaylistAdapter(this, tracksList);
         tracksListView.setAdapter(tracksAdapter);
         refreshListViewHeight(tracksListView);
         tracksListView.setOnItemClickListener(this::playTrack);

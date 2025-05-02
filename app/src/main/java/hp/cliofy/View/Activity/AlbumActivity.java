@@ -19,8 +19,8 @@ import java.util.List;
 import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Track;
-import hp.cliofy.View.Adapter.ItemAdapter;
 import hp.cliofy.R;
+import hp.cliofy.View.Adapter.TrackAlbumAdapter;
 
 public class AlbumActivity extends AppCompatActivity {
     private Album album;
@@ -61,7 +61,7 @@ public class AlbumActivity extends AppCompatActivity {
             facadeService.hydrateTrack(track);
         }
 
-        ItemAdapter<Track> tracksAdapter = new ItemAdapter<>(this, tracksList);
+        TrackAlbumAdapter tracksAdapter = new TrackAlbumAdapter(this, tracksList);
         tracksListView.setAdapter(tracksAdapter);
         refreshListViewHeight(tracksListView);
         tracksListView.setOnItemClickListener(this::playTrack);

@@ -6,14 +6,23 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/itemImage"
+        android:id="@+id/playlistImage"
         android:layout_width="64dp"
         android:layout_height="64dp" />
 
     <TextView
-        android:id="@+id/itemName"
+        android:id="@+id/playlistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:drawableTop="@drawable/play_fill"
+        android:contentDescription="Play playlist" />
 
 </LinearLayout>

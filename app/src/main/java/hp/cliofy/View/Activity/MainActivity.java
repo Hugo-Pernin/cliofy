@@ -28,9 +28,10 @@ import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
-import hp.cliofy.View.Adapter.ItemAdapter;
+import hp.cliofy.View.Adapter.ArtistAdapter;
 import hp.cliofy.Model.Observer.IObserver;
 import hp.cliofy.R;
+import hp.cliofy.View.Adapter.PlaylistAdapter;
 
 /**
  * Main activity of the project
@@ -105,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleSwitch.setOnClickListener(this::shuffleClick);
 
         playlistsList = new ArrayList<>();
-        ItemAdapter<Playlist> playlistsAdapter = new ItemAdapter<>(this, playlistsList);
+        PlaylistAdapter playlistsAdapter = new PlaylistAdapter(this, playlistsList);
         playlistsListView.setAdapter(playlistsAdapter);
         playlistsListView.setOnItemClickListener(this::openPlaylistActivity);
 
         topArtistsList = new ArrayList<>();
-        ItemAdapter<Artist> topArtistsAdapter = new ItemAdapter<>(this, topArtistsList);
+        ArtistAdapter topArtistsAdapter = new ArtistAdapter(this, topArtistsList);
         topArtistsListView.setAdapter(topArtistsAdapter);
         topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 

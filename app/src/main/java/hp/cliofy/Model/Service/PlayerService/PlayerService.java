@@ -51,8 +51,8 @@ public class PlayerService implements IPlayerService {
                         throw new IOException("Invalid response from server: " + code);
                     }
 
-                    //BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    //JSONObject json = new JSONObject(rd.readLine());
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    JSONObject json = new JSONObject(rd.readLine());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
