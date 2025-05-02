@@ -36,7 +36,8 @@ public class UserService implements IUserService {
                 String name = object.get("name").toString();
                 String uri = object.get("uri").toString();
                 String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
-                Playlist playlist = new Playlist(name, uri, imageUrl);
+                String owner = object.getJSONObject("owner").getString("display_name");
+                Playlist playlist = new Playlist(name, uri, imageUrl, owner);
                 list.add(playlist);
             }
         } catch (JSONException e) {

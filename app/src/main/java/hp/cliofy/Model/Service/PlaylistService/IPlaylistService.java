@@ -6,6 +6,5 @@ import hp.cliofy.Model.Item.Playlist;
 import hp.cliofy.Model.Item.Track;
 
 public interface IPlaylistService {
-    void hydratePlaylist(Playlist playlist);
     List<Track> getPlaylistTracks(Playlist playlist);
 }

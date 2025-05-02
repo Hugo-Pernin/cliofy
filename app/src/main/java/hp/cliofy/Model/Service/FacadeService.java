@@ -175,10 +175,6 @@ public class FacadeService extends Observable {
         artistService.hydrateArtist(artist);
     }
 
-    public void hydratePlaylist(Playlist playlist) {
-        playlistService.hydratePlaylist(playlist);
-    }
-
     public List<Album> getArtistAlbums(Artist artist, String type) {
         return artistService.getArtistAlbums(artist, type);
     }

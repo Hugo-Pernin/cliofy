@@ -41,7 +41,6 @@ public class PlaylistActivity extends AppCompatActivity {
         if (bundle != null) {
             Gson gson = new Gson();
             playlist = gson.fromJson(bundle.getString("playlist"), Playlist.class);
-            facadeService.hydratePlaylist(playlist);
         }
 
         playlistCover = findViewById(R.id.playlistCover);

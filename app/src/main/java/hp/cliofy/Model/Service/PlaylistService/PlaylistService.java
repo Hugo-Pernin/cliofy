@@ -25,16 +25,6 @@ public class PlaylistService implements  IPlaylistService {
     }
 
     @Override
-    public void hydratePlaylist(Playlist playlist) {
-        try {
-            JSONObject json = ApiClient.getRequest(PATH + playlist.getId());
-            playlist.setOwner(json.getJSONObject("owner").getString("display_name"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public List<Track> getPlaylistTracks(Playlist playlist) {
         List<Track> tracks = new ArrayList<>();
 

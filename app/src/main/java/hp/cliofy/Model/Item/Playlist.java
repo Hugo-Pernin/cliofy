@@ -4,14 +4,10 @@ package hp.cliofy.Model.Item;
  * A simplified playlist
  */
 public class Playlist extends Item {
-    private String owner;
+    private final String owner;
 
     public String getOwner() {
         return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getId() {
@@ -24,7 +20,8 @@ public class Playlist extends Item {
      * @param uri  uri of the playlist
      * @param imageUrl url of the image of the playlist
      */
-    public Playlist(String name, String uri, String imageUrl) {
+    public Playlist(String name, String uri, String imageUrl,String owner) {
         super(name, uri, imageUrl);
+        this.owner = owner;
     }
 }
