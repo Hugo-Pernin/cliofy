@@ -48,7 +48,7 @@ public class PlaylistActivity extends AppCompatActivity {
         Glide.with(this).load(playlist.getImageUrl()).into(playlistCover);
 
         informations = findViewById(R.id.informations);
-        informations.setText(playlist.toString() + " by " + playlist.getOwner());
+        informations.setText(playlist.getName() + " by " + playlist.getOwner());
 
         tracksListView = findViewById(R.id.tracksListView);
         tracksList = facadeService.getPlaylistTracks(playlist);

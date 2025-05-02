@@ -35,7 +35,7 @@ public class ArtistAdapter extends ArrayAdapter<Artist> {
         TextView artistName = convertView.findViewById(R.id.artistName);
 
         Glide.with(this.getContext()).load(artist.getImageUrl()).into(artistImage);
-        artistName.setText(artist.toString());
+        artistName.setText(artist.getName());
 
         return convertView;
     }

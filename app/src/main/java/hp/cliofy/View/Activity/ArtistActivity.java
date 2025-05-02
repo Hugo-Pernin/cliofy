@@ -65,7 +65,7 @@ public class ArtistActivity extends AppCompatActivity {
         Glide.with(this).load(artist.getImageUrl()).into(artistImage);
 
         informations = findViewById(R.id.informations);
-        informations.setText(artist.toString() + "\n" +
+        informations.setText(artist.getName() + "\n" +
                 artist.getFollowersTotal() + " followers\n" +
                 "Genres: " + artist.getGenres());
 

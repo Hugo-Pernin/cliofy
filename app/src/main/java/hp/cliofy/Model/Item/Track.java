@@ -75,10 +75,4 @@ public class Track extends Item {
     public Track(String name, String uri) {
         super(name, uri, "");
     }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return super.toString() + " - " + getArtist().toString() + " (" + getAlbum().toString() + ")";
-    }
 }

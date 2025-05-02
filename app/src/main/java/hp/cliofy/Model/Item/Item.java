@@ -41,10 +41,4 @@ public abstract class Item {
         this.uri = uri;
         this.imageUrl = imageUrl;
     }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return this.name;
-    }
 }

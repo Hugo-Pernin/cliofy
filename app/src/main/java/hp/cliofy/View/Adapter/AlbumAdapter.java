@@ -38,7 +38,7 @@ public class AlbumAdapter extends ArrayAdapter<Album> {
         Button playButton = convertView.findViewById(R.id.playButton);
 
         Glide.with(this.getContext()).load(album.getImageUrl()).into(albumImage);
-        albumName.setText(album.toString());
+        albumName.setText(album.getName());
         playButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().play(album.getUri());
         });
