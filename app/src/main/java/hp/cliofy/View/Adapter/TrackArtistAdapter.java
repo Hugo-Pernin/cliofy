@@ -43,7 +43,7 @@ public class TrackArtistAdapter extends ArrayAdapter<Track> {
         Button albumButton = convertView.findViewById(R.id.albumButton);
 
         Glide.with(this.getContext()).load(track.getImageUrl()).into(albumImage);
-        trackName.setText(track.getName() + "(" + track.getAlbum().getName() + ")");
+        trackName.setText(track.getName());
         queueButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().addItemToQueue(track.getUri());
         });
