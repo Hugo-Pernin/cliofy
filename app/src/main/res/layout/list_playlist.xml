@@ -7,10 +7,10 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/playlistImage"
+        android:id="@+id/playlistCover"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Playlist image" />
+        android:contentDescription="Playlist cover" />
 
     <TextView
         android:id="@+id/playlistName"

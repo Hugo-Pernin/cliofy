@@ -7,10 +7,10 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/albumImage"
+        android:id="@+id/albumCover"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Album image" />
+        android:contentDescription="Album cover" />
 
     <TextView
         android:id="@+id/albumName"

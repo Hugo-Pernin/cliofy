@@ -33,11 +33,11 @@ public class PlaylistAdapter extends ArrayAdapter<Playlist> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_playlist, parent, false);
         }
 
-        ImageView playlistImage = convertView.findViewById(R.id.playlistImage);
+        ImageView playlistCover = convertView.findViewById(R.id.playlistCover);
         TextView playlistName = convertView.findViewById(R.id.playlistName);
         Button playButton = convertView.findViewById(R.id.playButton);
 
-        Glide.with(this.getContext()).load(playlist.getImageUrl()).into(playlistImage);
+        Glide.with(this.getContext()).load(playlist.getImageUrl()).into(playlistCover);
         playlistName.setText(playlist.getName());
         playButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().play(playlist.getUri());

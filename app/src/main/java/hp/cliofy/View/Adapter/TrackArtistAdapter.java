@@ -37,12 +37,12 @@ public class TrackArtistAdapter extends ArrayAdapter<Track> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_track_artist, parent, false);
         }
 
-        ImageView albumImage = convertView.findViewById(R.id.albumImage);
+        ImageView albumCover = convertView.findViewById(R.id.albumCover);
         TextView trackName = convertView.findViewById(R.id.trackName);
         Button queueButton = convertView.findViewById(R.id.queueButton);
         Button albumButton = convertView.findViewById(R.id.albumButton);
 
-        Glide.with(this.getContext()).load(track.getImageUrl()).into(albumImage);
+        Glide.with(this.getContext()).load(track.getImageUrl()).into(albumCover);
         trackName.setText(track.getName());
         queueButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().addItemToQueue(track.getUri());

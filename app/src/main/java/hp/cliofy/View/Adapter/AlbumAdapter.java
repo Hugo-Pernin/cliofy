@@ -33,11 +33,11 @@ public class AlbumAdapter extends ArrayAdapter<Album> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_album, parent, false);
         }
 
-        ImageView albumImage = convertView.findViewById(R.id.albumImage);
+        ImageView albumCover = convertView.findViewById(R.id.albumCover);
         TextView albumName = convertView.findViewById(R.id.albumName);
         Button playButton = convertView.findViewById(R.id.playButton);
 
-        Glide.with(this.getContext()).load(album.getImageUrl()).into(albumImage);
+        Glide.with(this.getContext()).load(album.getImageUrl()).into(albumCover);
         albumName.setText(album.getName());
         playButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().play(album.getUri());
