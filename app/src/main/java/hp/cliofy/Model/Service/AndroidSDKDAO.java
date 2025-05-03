@@ -148,4 +148,8 @@ class AndroidSDKDAO {
         facadeService.notifyShuffleChange(isShuffling);
         facadeService.notifyTrackChange(track);
     }
+
+    public void addItemToQueue(String uri) {
+        spotifyAppRemote.getPlayerApi().queue(uri);
+    }
 }

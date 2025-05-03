@@ -188,8 +188,8 @@ public class FacadeService extends Observable {
     }
 
     // uri ou Item ?
-    public void addItemToPlaybackQueue(String uri) {
-        // TODO implémenter
+    public void addItemToQueue(String uri) {
+        androidSDKDAO.addItemToQueue(uri);
     }
 
     public Bitmap getBitmapImageFromUrl(String url) {

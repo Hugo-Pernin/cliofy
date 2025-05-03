@@ -35,7 +35,7 @@ public class TrackAlbumAdapter extends ArrayAdapter<Track> {
 
         trackName.setText(track.getName());
         queueButton.setOnClickListener((View view) -> {
-            FacadeService.getInstance().addItemToPlaybackQueue(track.getUri());
+            FacadeService.getInstance().addItemToQueue(track.getUri());
         });
 
         return convertView;
