@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import hp.cliofy.Model.Item.Track;
@@ -37,8 +39,7 @@ public class TrackPlaylistAdapter extends ArrayAdapter<Track> {
         Button albumButton = convertView.findViewById(R.id.albumButton);
         Button artistButton = convertView.findViewById(R.id.artistButton);
 
-        // TODO réparer l'image
-        //Glide.with(this.getContext()).load(track.getImageUrl()).into(albumImage);
+        Glide.with(this.getContext()).load(track.getImageUrl()).into(albumImage);
         trackName.setText(track.getName() + " - " + track.getArtist().getName());
         queueButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().addItemToPlaybackQueue(track.getUri());
