@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,12 +30,9 @@ public class TrackAlbumAdapter extends ArrayAdapter<Track> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_track_album, parent, false);
         }
 
-        ImageView albumImage = convertView.findViewById(R.id.albumImage);
         TextView trackName = convertView.findViewById(R.id.trackName);
         Button queueButton = convertView.findViewById(R.id.queueButton);
 
-        // TODO réparer l'image
-        //Glide.with(this.getContext()).load(track.getImageUrl()).into(albumImage);
         trackName.setText(track.getName());
         queueButton.setOnClickListener((View view) -> {
             FacadeService.getInstance().addItemToPlaybackQueue(track.getUri());
