@@ -83,12 +83,12 @@ public class FacadeService extends Observable {
         accessToken = authenticationService.getAccessToken();
         ApiClient.setAccessToken(accessToken);
         // Peut être enlevé
-        albumService = serviceFactory.createAlbumService(accessToken);
-        artistService = serviceFactory.createArtistService(accessToken);
-        playerService = serviceFactory.createPlayerService(accessToken);
-        playlistService = serviceFactory.createPlaylistService(accessToken);
-        trackService = serviceFactory.createTrackService(accessToken);
-        userService = serviceFactory.createUserService(accessToken);
+        albumService = serviceFactory.createAlbumService();
+        artistService = serviceFactory.createArtistService();
+        playerService = serviceFactory.createPlayerService();
+        playlistService = serviceFactory.createPlaylistService();
+        trackService = serviceFactory.createTrackService();
+        userService = serviceFactory.createUserService();
         connectAndroidSDKDAO(context); // TODO why here?
     }
 

@@ -4,11 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +13,6 @@ import hp.cliofy.Model.Service.ApiClient;
 
 public class UserService implements IUserService {
     private final String PATH = "https://api.spotify.com/v1/me/";
-    private final String accessToken;
-
-    public UserService(String accessToken) {
-        this.accessToken = accessToken;
-    }
 
     @Override
     public List<Playlist> getPlaylistsList() {

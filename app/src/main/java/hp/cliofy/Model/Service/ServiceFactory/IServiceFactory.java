@@ -9,11 +9,11 @@ import hp.cliofy.Model.Service.TrackService.ITrackService;
 import hp.cliofy.Model.Service.UserService.IUserService;
 
 public interface IServiceFactory {
-    IAlbumService createAlbumService(String accessToken);
-    IArtistService createArtistService(String accessToken);
+    IAlbumService createAlbumService();
+    IArtistService createArtistService();
     IAuthenticationService createAuthenticationService();
-    IPlayerService createPlayerService(String accessToken);
-    IPlaylistService createPlaylistService(String accessToken);
-    ITrackService createTrackService(String accessToken);
-    IUserService createUserService(String accessToken);
+    IPlayerService createPlayerService();
+    IPlaylistService createPlaylistService();
+    ITrackService createTrackService();
+    IUserService createUserService();
 }

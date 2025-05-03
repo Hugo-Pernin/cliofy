@@ -17,13 +17,13 @@ import hp.cliofy.Model.Service.UserService.UserService;
 
 public class ServiceFactory implements IServiceFactory {
     @Override
-    public IAlbumService createAlbumService(String accessToken) {
-        return new AlbumService(accessToken);
+    public IAlbumService createAlbumService() {
+        return new AlbumService();
     }
 
     @Override
-    public IArtistService createArtistService(String accessToken) {
-        return new ArtistService(accessToken);
+    public IArtistService createArtistService() {
+        return new ArtistService();
     }
 
     @Override
@@ -32,22 +32,22 @@ public class ServiceFactory implements IServiceFactory {
     }
 
     @Override
-    public IPlayerService createPlayerService(String accessToken) {
-        return new PlayerService(accessToken);
+    public IPlayerService createPlayerService() {
+        return new PlayerService();
     }
 
     @Override
-    public IPlaylistService createPlaylistService(String accessToken) {
-        return new PlaylistService(accessToken);
+    public IPlaylistService createPlaylistService() {
+        return new PlaylistService();
     }
 
     @Override
-    public ITrackService createTrackService(String accessToken) {
-        return new TrackService(accessToken);
+    public ITrackService createTrackService() {
+        return new TrackService();
     }
 
     @Override
-    public IUserService createUserService(String accessToken) {
-        return new UserService(accessToken);
+    public IUserService createUserService() {
+        return new UserService();
     }
 }

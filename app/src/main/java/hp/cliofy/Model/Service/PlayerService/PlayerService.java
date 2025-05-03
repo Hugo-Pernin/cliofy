@@ -4,11 +4,6 @@ import hp.cliofy.Model.Service.ApiClient;
 
 public class PlayerService implements IPlayerService {
     private final String PATH = "https://api.spotify.com/v1/me/player/";
-    private final String accessToken;
-
-    public PlayerService(String accessToken) {
-        this.accessToken = accessToken;
-    }
 
     @Override
     public void playWithOffset(String uri, int offset) {
