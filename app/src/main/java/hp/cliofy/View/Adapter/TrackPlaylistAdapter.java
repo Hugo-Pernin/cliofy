@@ -18,10 +18,12 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import hp.cliofy.Model.Item.Album;
+import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Track;
 import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.R;
 import hp.cliofy.View.Activity.AlbumActivity;
+import hp.cliofy.View.Activity.ArtistActivity;
 
 public class TrackPlaylistAdapter extends ArrayAdapter<Track> {
     public TrackPlaylistAdapter(Context context, List<Track> data) {
@@ -58,11 +60,11 @@ public class TrackPlaylistAdapter extends ArrayAdapter<Track> {
         });
         artistButton.setOnClickListener((View view) -> {
             // TODO respecter S & O
-            /*Intent intent = new Intent(getContext(), ArtistActivity.class);
+            Intent intent = new Intent(getContext(), ArtistActivity.class);
             Artist artist = track.getArtist();
             Gson gson = new Gson();
             intent.putExtra("artist", gson.toJson(artist));
-            getContext().startActivity(intent);*/
+            getContext().startActivity(intent);
         });
 
         return convertView;
