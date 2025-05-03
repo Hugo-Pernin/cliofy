@@ -57,7 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/avatars"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:contentDescription="Album cover" />
 
         <TextView
             android:layout_width="wrap_content"

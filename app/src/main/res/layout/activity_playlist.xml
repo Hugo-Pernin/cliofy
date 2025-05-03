@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             tools:srcCompat="@tools:sample/avatars"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:contentDescription="Playlist cover" />
 
         <TextView
             android:id="@+id/informations"

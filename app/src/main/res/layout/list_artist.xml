@@ -9,7 +9,8 @@
     <ImageView
         android:id="@+id/artistImage"
         android:layout_width="64dp"
-        android:layout_height="64dp" />
+        android:layout_height="64dp"
+        android:contentDescription="Artist image" />
 
     <TextView
         android:id="@+id/artistName"
