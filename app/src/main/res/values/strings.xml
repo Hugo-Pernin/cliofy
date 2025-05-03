@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Cliofy</string>
+    <string name="album_cover">Album cover</string>
+    <string name="add_to_queue">Add to queue</string>
+    <string name="see_album">See album</string>
+    <string name="see_artist">See artist</string>
+    <string name="playlist_cover">Playlist cover</string>
+    <string name="play_playlist">Play playlist</string>
+    <string name="artist_image">Artist image</string>
+    <string name="play_album">Play Album</string>
+    <string name="tracks">Tracks</string>
+    <string name="your_playlists">Your playlists</string>
+    <string name="your_top_artists_of_the_month">Your top artists of the month</string>
+    <string name="top_tracks">Top tracks</string>
+    <string name="albums">Albums</string>
+    <string name="singles">Singles</string>
+    <string name="compilations">Compilations</string>
 </resources>

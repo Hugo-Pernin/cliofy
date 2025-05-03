@@ -10,14 +10,14 @@
         android:id="@+id/albumCover"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Album cover" />
+        android:contentDescription="@string/album_cover" />
 
     <TextView
         android:id="@+id/albumName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Name" />
+        android:text="" />
 
     <Button
         android:id="@+id/playButton"
@@ -26,6 +26,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:drawableTop="@drawable/play_fill"
-        android:contentDescription="Play album" />
+        android:contentDescription="@string/play_album" />
 
 </LinearLayout>

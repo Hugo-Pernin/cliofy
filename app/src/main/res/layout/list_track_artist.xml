@@ -10,14 +10,14 @@
         android:id="@+id/albumCover"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Album cover" />
+        android:contentDescription="@string/album_cover" />
 
     <TextView
         android:id="@+id/trackName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Name" />
+        android:text="" />
 
     <Button
         android:id="@+id/queueButton"
@@ -26,7 +26,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:drawableTop="@drawable/music_note_list"
-        android:contentDescription="Add to queue" />
+        android:contentDescription="@string/add_to_queue" />
 
     <Button
         android:id="@+id/albumButton"
@@ -35,6 +35,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:drawableTop="@drawable/disc_fill"
-        android:contentDescription="See album" />
+        android:contentDescription="@string/see_album" />
 
 </LinearLayout>

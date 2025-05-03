@@ -48,7 +48,7 @@
             android:id="@+id/informations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text=""
             android:gravity="center"
             android:layout_gravity="center" />
 
@@ -58,12 +58,12 @@
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/avatars"
             android:layout_gravity="center"
-            android:contentDescription="Album cover" />
+            android:contentDescription="@string/album_cover" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your playlists" />
+            android:text="@string/your_playlists" />
 
         <ListView
             android:id="@+id/playlistsListView"
@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your top artists of the month" />
+            android:text="@string/your_top_artists_of_the_month" />
 
         <ListView
             android:id="@+id/topArtistsListView"

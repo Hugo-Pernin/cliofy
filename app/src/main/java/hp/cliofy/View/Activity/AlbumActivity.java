@@ -47,10 +47,7 @@ public class AlbumActivity extends AppCompatActivity {
         Glide.with(this).load(album.getImageUrl()).into(albumCover);
 
         informations = findViewById(R.id.informations);
-        informations.setText(album.getName() + "\n" +
-                "Type: " + album.getAlbumType() + "\n" +
-                album.getTotalTracks() + " tracks\n" +
-                album.getReleaseDate());
+        informations.setText(String.format("%s\nType: %s\n%d tracks\n%s", album.getName(), album.getAlbumType(), album.getTotalTracks(), album.getReleaseDate()));
 
         tracksListView = findViewById(R.id.tracksListView);
         tracksList = facadeService.getAlbumTracks(album);

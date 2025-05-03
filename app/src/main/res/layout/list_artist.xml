@@ -10,13 +10,13 @@
         android:id="@+id/artistImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Artist image" />
+        android:contentDescription="@string/artist_image" />
 
     <TextView
         android:id="@+id/artistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Name" />
+        android:text="" />
 
 </LinearLayout>

@@ -65,9 +65,7 @@ public class ArtistActivity extends AppCompatActivity {
         Glide.with(this).load(artist.getImageUrl()).into(artistImage);
 
         informations = findViewById(R.id.informations);
-        informations.setText(artist.getName() + "\n" +
-                artist.getFollowersTotal() + " followers\n" +
-                "Genres: " + artist.getGenres());
+        informations.setText(String.format("%s\n%d followers\nGenres: %s", artist.getName(), artist.getFollowersTotal(), artist.getGenres()));
 
         topTracksListView = findViewById(R.id.topTracksListView);
         topTracksList = facadeService.getArtistTopTracks(artist);

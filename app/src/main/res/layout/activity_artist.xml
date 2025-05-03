@@ -19,18 +19,18 @@
             android:padding="8dp"
             tools:srcCompat="@tools:sample/avatars"
             android:adjustViewBounds="true"
-            android:contentDescription="Artist image" />
+            android:contentDescription="@string/artist_image" />
 
         <TextView
             android:id="@+id/informations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top tracks" />
+            android:text="@string/top_tracks" />
 
         <ListView
             android:id="@+id/topTracksListView"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Albums" />
+            android:text="@string/albums" />
 
         <ListView
             android:id="@+id/albumsListView"
@@ -50,7 +50,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Singles" />
+            android:text="@string/singles" />
 
         <ListView
             android:id="@+id/singlesListView"
@@ -60,7 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Compilations" />
+            android:text="@string/compilations" />
 
         <ListView
             android:id="@+id/compilationsListView"
