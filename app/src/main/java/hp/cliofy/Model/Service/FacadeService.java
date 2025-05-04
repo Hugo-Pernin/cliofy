@@ -195,16 +195,12 @@ public class FacadeService extends Observable {
     public Bitmap getBitmapImageFromUrl(String url) {
         final Bitmap[] image = new Bitmap[1]; // A one-entry array is necessary
 
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    URL urlObject = new URL(url);
-                    image[0] = BitmapFactory.decodeStream(urlObject.openConnection().getInputStream());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Thread thread = new Thread(() -> {
+            try {
+                URL urlObject = new URL(url);
+                image[0] = BitmapFactory.decodeStream(urlObject.openConnection().getInputStream());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
