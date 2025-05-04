@@ -14,8 +14,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class ApiClient {
     private static final OkHttpClient okHttpClient = new OkHttpClient();
