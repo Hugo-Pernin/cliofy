@@ -15,4 +15,8 @@
     <string name="albums">Albums</string>
     <string name="singles">Singles</string>
     <string name="compilations">Compilations</string>
+    <string name="previous_track">Previous track</string>
+    <string name="next_track">Next track</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 </resources>

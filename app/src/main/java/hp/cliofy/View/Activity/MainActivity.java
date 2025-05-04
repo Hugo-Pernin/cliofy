@@ -2,11 +2,13 @@ package hp.cliofy.View.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.view.View;
 import android.view.WindowManager;
@@ -255,12 +257,18 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     // TODO utiliser les ressources
     @Override
     public void pauseChange(boolean isPaused) {
+        Drawable drawable;
+        String contentDescription;
         if (isPaused) {
-            pauseResumeButton.setText("Resume");
+            drawable = ContextCompat.getDrawable(this, R.drawable.play_fill);
+            contentDescription = getResources().getString(R.string.resume);
         }
         else {
-            pauseResumeButton.setText("Pause");
+            drawable = ContextCompat.getDrawable(this, R.drawable.pause_fill);
+            contentDescription = getResources().getString(R.string.pause);
         }
+        pauseResumeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, drawable, null, null);
+        pauseResumeButton.setContentDescription(contentDescription);
     }
 
     @Override

@@ -19,15 +19,15 @@
 
             <Button
                 android:id="@+id/skipPreviousButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Previous track" />
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:drawableTop="@drawable/skip_backward_fill"
+                android:contentDescription="@string/previous_track" />
 
             <Button
                 android:id="@+id/pauseResumeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pause" />
+                android:layout_width="64dp"
+                android:layout_height="64dp" />
 
             <Switch
                 android:id="@+id/shuffleSwitch"
@@ -41,8 +41,9 @@
             android:id="@+id/skipNextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next track"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/skip_forward_fill"
+            android:contentDescription="@string/next_track" />
 
         <TextView
             android:id="@+id/informations"
