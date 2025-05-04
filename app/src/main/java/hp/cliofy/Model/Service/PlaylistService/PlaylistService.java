@@ -21,7 +21,10 @@ public class PlaylistService implements  IPlaylistService {
         List<Track> tracks = new ArrayList<>();
 
         try {
-            JSONObject json = ApiClient.getRequest(PATH + playlist.getId() + "/tracks?limit=50");
+            JSONObject json = ApiClient.getRequest(PATH + playlist.getId() + "/tracks?limit=50"
+                + "&fields=items%28track%28name%2Curi%2Calbum%28name%2Curi%2Cimages%2Calbum_type%2Ctotal_tracks%2Crelease_date%29%2Cartists%28name%2Curi%29%29%29"
+                // We ask only the fiels we need
+            );
             JSONArray array = json.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i).getJSONObject("track");
