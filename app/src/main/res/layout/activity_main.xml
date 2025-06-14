@@ -27,7 +27,8 @@
             <Button
                 android:id="@+id/pauseResumeButton"
                 android:layout_width="64dp"
-                android:layout_height="64dp" />
+                android:layout_height="64dp"
+                android:drawableTop="@drawable/play_fill" />
 
             <Button
                 android:id="@+id/shuffleButton"
