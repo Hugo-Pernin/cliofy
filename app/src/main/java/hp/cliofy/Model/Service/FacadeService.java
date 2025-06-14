@@ -108,6 +108,13 @@ public class FacadeService extends Observable {
     }
 
     /**
+     * Enables shuffle if it's disabled, or disables it if it's enabled
+     */
+    public void shuffleSwitch() {
+        androidSDKDAO.shuffleSwitch();
+    }
+
+    /**
      * Skips to the previous track
      */
     public void skipPrevious() {

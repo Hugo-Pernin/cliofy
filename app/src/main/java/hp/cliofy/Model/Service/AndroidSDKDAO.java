@@ -35,6 +35,11 @@ class AndroidSDKDAO {
     private boolean isPaused = false;
 
     /**
+     * Shuffling state of the player: true if it's shuffling, false if not
+     */
+    private boolean isShuffling = false;
+
+    /**
      * Connects the DAO to the Spotify Android app
      * @param context TODO expliquer
      * @param facadeService TODO expliquer
@@ -115,6 +120,15 @@ class AndroidSDKDAO {
         spotifyAppRemote.getPlayerApi().play(uri);
     }
 
+    public void shuffleSwitch() {
+        if (isShuffling) {
+            disableShuffle();
+        }
+        else {
+            enableShuffle();
+        }
+    }
+
     /**
      * Disables shuffle mode
      */
@@ -137,7 +151,7 @@ class AndroidSDKDAO {
      */
     private void refreshPlayerState(PlayerState playerState, FacadeService facadeService) {
         isPaused = playerState.isPaused;
-        boolean isShuffling = playerState.playbackOptions.isShuffling;
+        isShuffling = playerState.playbackOptions.isShuffling;
 
         String name = playerState.track.name;
         String uri = playerState.track.uri;

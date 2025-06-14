@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     private Button skipNextButton;
 
     /**
-     * shuffling mode switch
+     * shuffling mode button
      */
-    private Switch shuffleSwitch;
+    private Button shuffleButton;
 
     /**
      * Informations of the current track
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         pauseResumeButton = findViewById(R.id.pauseResumeButton);
         skipPreviousButton = findViewById(R.id.skipPreviousButton);
         skipNextButton = findViewById(R.id.skipNextButton);
-        shuffleSwitch = findViewById(R.id.shuffleSwitch);
+        shuffleButton = findViewById(R.id.shuffleButton);
         informations = findViewById(R.id.informations);
         albumCover = findViewById(R.id.albumCover);
         playlistsListView = findViewById(R.id.playlistsListView);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         pauseResumeButton.setOnClickListener(this::pauseResumeClick);
         skipPreviousButton.setOnClickListener(this::skipPreviousClick);
         skipNextButton.setOnClickListener(this::skipNextClick);
-        shuffleSwitch.setOnClickListener(this::shuffleClick);
+        shuffleButton.setOnClickListener(this::shuffleClick);
 
         playlistsList = new ArrayList<>();
         PlaylistAdapter playlistsAdapter = new PlaylistAdapter(this, playlistsList);
@@ -246,12 +246,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
      * @param v TODO expliquer
      */
     private void shuffleClick(View v) {
-        if (shuffleSwitch.isChecked()) {
-            facadeService.enableShuffle();
-        }
-        else {
-            facadeService.disableShuffle();
-        }
+        facadeService.shuffleSwitch();
     }
 
     // TODO utiliser les ressources
@@ -273,7 +268,18 @@ public class MainActivity extends AppCompatActivity implements IObserver {
 
     @Override
     public void shuffleChange(boolean isShuffling) {
-        shuffleSwitch.setChecked(isShuffling);
+        float alpha;
+        String contentDescription;
+        if (isShuffling) {
+            alpha = 1.0f;
+            contentDescription = "Disable shuffling";
+        }
+        else {
+            alpha = 0.5f;
+            contentDescription = "Enable shuffling";
+        }
+        shuffleButton.setAlpha(alpha);
+        shuffleButton.setContentDescription(contentDescription);
     }
 
     @Override
