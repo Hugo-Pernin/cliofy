@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -21,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -87,11 +89,17 @@ public class MainActivity extends AppCompatActivity implements IObserver {
     private ListView topArtistsListView;
     private List<Artist> topArtistsList;
 
+    private PlaylistAdapter playlistsAdapter;
+    private ArtistAdapter topArtistsAdapter;
+
     // TODO commenter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadLoadingIcon(R.id.loading_playlists);
+        loadLoadingIcon(R.id.loading_artists);
 
         pauseResumeButton = findViewById(R.id.pauseResumeButton);
         skipPreviousButton = findViewById(R.id.skipPreviousButton);
@@ -108,12 +116,12 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         shuffleButton.setOnClickListener(this::shuffleClick);
 
         playlistsList = new ArrayList<>();
-        PlaylistAdapter playlistsAdapter = new PlaylistAdapter(this, playlistsList);
+        playlistsAdapter = new PlaylistAdapter(this, playlistsList);
         playlistsListView.setAdapter(playlistsAdapter);
         playlistsListView.setOnItemClickListener(this::openPlaylistActivity);
 
         topArtistsList = new ArrayList<>();
-        ArtistAdapter topArtistsAdapter = new ArtistAdapter(this, topArtistsList);
+        topArtistsAdapter = new ArtistAdapter(this, topArtistsList);
         topArtistsListView.setAdapter(topArtistsAdapter);
         topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 
@@ -121,6 +129,16 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         facadeService.addObserver(this);
         facadeService.connect(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
+    }
+
+    private void loadLoadingIcon(@IdRes int id) {
+        ImageView loading = findViewById(id);
+        Glide.with(this).asGif().load("file:///android_asset/loading.gif").into(loading);
+    }
+
+    private void hideView(@IdRes int id) {
+        View view = findViewById(id);
+        view.setVisibility(View.GONE);
     }
 
     /**
@@ -183,12 +201,24 @@ public class MainActivity extends AppCompatActivity implements IObserver {
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
                 facadeService.storeAuthorizationCode(authorizationCode, this);
-                List<Playlist> playlists = facadeService.getPlaylistsList();
-                playlistsList.addAll(playlists);
-                List<Artist> topArtists = facadeService.getTopArtists();
-                topArtistsList.addAll(topArtists);
-                refreshListViewHeight(playlistsListView);
-                refreshListViewHeight(topArtistsListView);
+
+                facadeService.getPlaylistsList().thenAccept(result -> {
+                    runOnUiThread(() -> {
+                        playlistsList.addAll(result);
+                        playlistsAdapter.notifyDataSetChanged();
+                        refreshListViewHeight(playlistsListView);
+                        hideView(R.id.loading_playlists);
+                    });
+                });
+
+                facadeService.getTopArtists().thenAccept(result -> {
+                    runOnUiThread(() -> {
+                        topArtistsList.addAll(result);
+                        topArtistsAdapter.notifyDataSetChanged();
+                        refreshListViewHeight(topArtistsListView);
+                        hideView(R.id.loading_artists);
+                    });
+                });
             }
             else {
                 Toast.makeText(this, "Erreur lors de la connexion à l'API : connexion refusée", Toast.LENGTH_SHORT).show();

@@ -9,11 +9,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hp.cliofy.Model.Service.FacadeService;
@@ -35,7 +37,7 @@ public class PlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
 
-        facadeService = FacadeService.getInstance();
+        loadLoadingIcon(R.id.loading);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -50,18 +52,36 @@ public class PlaylistActivity extends AppCompatActivity {
         informations.setText(String.format("%s by %s", playlist.getName(), playlist.getOwner()));
 
         tracksListView = findViewById(R.id.tracksListView);
-        tracksList = facadeService.getPlaylistTracks(playlist);
-
-        // TODO enlever l'hydratation des activités
-        for (Track track : tracksList) {
-            facadeService.hydrateTrack(track);
-        }
+        tracksList = new ArrayList<>();
 
         TrackPlaylistAdapter tracksAdapter = new TrackPlaylistAdapter(this, tracksList);
         tracksListView.setAdapter(tracksAdapter);
-        refreshListViewHeight(tracksListView);
         tracksListView.setOnItemClickListener(this::playTrack);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
+
+        facadeService = FacadeService.getInstance();
+
+        facadeService.getPlaylistTracks(playlist).thenAccept(result -> {
+            runOnUiThread(() -> {
+                for (Track track : result) {
+                    facadeService.hydrateTrack(track);
+                    tracksList.add(track);
+                }
+                tracksAdapter.notifyDataSetChanged();
+                refreshListViewHeight(tracksListView);
+                hideView(R.id.loading);
+            });
+        });
+    }
+
+    private void loadLoadingIcon(@IdRes int id) {
+        ImageView loading = findViewById(id);
+        Glide.with(this).asGif().load("file:///android_asset/loading.gif").into(loading);
+    }
+
+    private void hideView(@IdRes int id) {
+        View view = findViewById(id);
+        view.setVisibility(View.GONE);
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Artist;
@@ -158,7 +159,7 @@ public class FacadeService extends Observable {
      * Gets the playlists list of the current user
      * @return playlists list of the current user
      */
-    public List<Playlist> getPlaylistsList() {
+    public CompletableFuture<List<Playlist>> getPlaylistsList() {
         return userService.getPlaylistsList();
     }
 
@@ -166,7 +167,7 @@ public class FacadeService extends Observable {
      * Gets the top artists of the current user
      * @return top artists of the current user
      */
-    public List<Artist> getTopArtists() {
+    public CompletableFuture<List<Artist>> getTopArtists() {
         return userService.getTopArtists();
     }
 
@@ -178,19 +179,19 @@ public class FacadeService extends Observable {
         artistService.hydrateArtist(artist);
     }
 
-    public List<Album> getArtistAlbums(Artist artist, String type) {
+    public CompletableFuture<List<Album>> getArtistAlbums(Artist artist, String type) {
         return artistService.getArtistAlbums(artist, type);
     }
 
-    public List<Track> getArtistTopTracks(Artist artist) {
+    public CompletableFuture<List<Track>> getArtistTopTracks(Artist artist) {
         return artistService.getArtistTopTracks(artist);
     }
 
-    public List<Track> getAlbumTracks(Album album) {
+    public CompletableFuture<List<Track>> getAlbumTracks(Album album) {
         return albumService.getAlbumTracks(album);
     }
 
-    public List<Track> getPlaylistTracks(Playlist playlist) {
+    public CompletableFuture<List<Track>> getPlaylistTracks(Playlist playlist) {
         return playlistService.getPlaylistTracks(playlist);
     }
 

@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 import okhttp3.OkHttpClient;
 
@@ -62,10 +63,9 @@ public class ApiClient {
     }
 */
 
-    public static JSONObject getRequest(String endpoint) {
-        final JSONObject[] json = {null}; // A one-entry array is necessary
-
-        Thread thread = new Thread(() -> {
+    public static CompletableFuture<JSONObject> getRequest(String endpoint) {
+        return CompletableFuture.supplyAsync(() -> {
+            JSONObject result = null;
             try {
                 HttpURLConnection urlConnection = null;
                 try {
@@ -80,7 +80,7 @@ public class ApiClient {
                     }
 
                     BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    json[0] = new JSONObject(rd.readLine());
+                    result = new JSONObject(rd.readLine());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -91,17 +91,8 @@ public class ApiClient {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return result;
         });
-
-        thread.start();
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return json[0];
     }
 
     public static JSONObject putRequest(String endpoint, String data) {

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import hp.cliofy.Model.Item.Album;
 import hp.cliofy.Model.Item.Artist;
@@ -18,7 +19,7 @@ public class ArtistService implements IArtistService {
     @Override
     public void hydrateArtist(Artist artist) {
         try {
-            JSONObject json = ApiClient.getRequest(PATH + artist.getId());
+            JSONObject json = ApiClient.getRequest(PATH + artist.getId()).get();
             artist.setFollowersTotal(json.getJSONObject("followers").getInt("total"));
 
             List<String> genres = new ArrayList<>();
@@ -27,66 +28,66 @@ public class ArtistService implements IArtistService {
                 genres.add(genresArray.getString(i));
             }
             artist.setGenres(genres);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public List<Album> getArtistAlbums(Artist artist, String type) {
-        List<Album> albums = new ArrayList<>();
-
-        try {
-            JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/albums?limit=50&include_groups=" + type);
-            JSONArray array = json.getJSONArray("items");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i);
-                String name = object.getString("name");
-                String uri = object.getString("uri");
-                String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
-                String albumType = object.getString("album_type");
-                int totalTracks = object.getInt("total_tracks");
-                String releaseDate = object.getString("release_date");
-                Album album = new Album(name, uri, imageUrl, albumType, totalTracks, releaseDate);
-                albums.add(album);
+    public CompletableFuture<List<Album>> getArtistAlbums(Artist artist, String type) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Album> result = new ArrayList<>();
+            try {
+                JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/albums?limit=50&include_groups=" + type).get();
+                JSONArray array = json.getJSONArray("items");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    String name = object.getString("name");
+                    String uri = object.getString("uri");
+                    String imageUrl = object.getJSONArray("images").getJSONObject(0).getString("url");
+                    String albumType = object.getString("album_type");
+                    int totalTracks = object.getInt("total_tracks");
+                    String releaseDate = object.getString("release_date");
+                    Album album = new Album(name, uri, imageUrl, albumType, totalTracks, releaseDate);
+                    result.add(album);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return albums;
+            return result;
+        });
     }
 
     @Override
-    public List<Track> getArtistTopTracks(Artist artist) {
-        List<Track> topTracks = new ArrayList<>();
+    public CompletableFuture<List<Track>> getArtistTopTracks(Artist artist) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Track> result = new ArrayList<>();
+            try {
+                JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/top-tracks").get();
+                JSONArray array = json.getJSONArray("tracks");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    String name = object.getString("name");
+                    String uri = object.getString("uri");
+                    String imageUrl = object.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url");
+                    Track track = new Track(name, uri, imageUrl);
 
-        try {
-            JSONObject json = ApiClient.getRequest(PATH + artist.getId() + "/top-tracks");
-            JSONArray array = json.getJSONArray("tracks");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i);
-                String name = object.getString("name");
-                String uri = object.getString("uri");
-                String imageUrl = object.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url");
-                Track track = new Track(name, uri, imageUrl);
+                    JSONObject albumObject = object.getJSONObject("album");
+                    String albumName = albumObject.getString("name");
+                    String albumUri = albumObject.getString("uri");
+                    String albumImageUrl = albumObject.getJSONArray("images").getJSONObject(0).getString("url");
+                    String albumType = albumObject.getString("album_type");
+                    int albumTotalTracks = albumObject.getInt("total_tracks");
+                    String albumReleaseDate = albumObject.getString("release_date");
+                    Album album = new Album(albumName, albumUri, albumImageUrl, albumType, albumTotalTracks, albumReleaseDate);
+                    track.setAlbum(album);
 
-                JSONObject albumObject = object.getJSONObject("album");
-                String albumName = albumObject.getString("name");
-                String albumUri = albumObject.getString("uri");
-                String albumImageUrl = albumObject.getJSONArray("images").getJSONObject(0).getString("url");
-                String albumType = albumObject.getString("album_type");
-                int albumTotalTracks = albumObject.getInt("total_tracks");
-                String albumReleaseDate = albumObject.getString("release_date");
-                Album album = new Album(albumName, albumUri, albumImageUrl, albumType, albumTotalTracks, albumReleaseDate);
-                track.setAlbum(album);
-
-                topTracks.add(track);
+                    result.add(track);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return topTracks;
+            return result;
+        });
     }
 }

@@ -36,6 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <ImageView
+            android:id="@+id/loading_top_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="100dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +52,13 @@
             android:id="@+id/albumsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/loading_albums"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="100dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,6 +70,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <ImageView
+            android:id="@+id/loading_singles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="100dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,6 +86,13 @@
             android:id="@+id/compilationsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/loading_compilations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="100dp" />
 
     </LinearLayout>
 </ScrollView>

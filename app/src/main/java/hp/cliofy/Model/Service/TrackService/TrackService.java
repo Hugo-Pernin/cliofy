@@ -14,7 +14,7 @@ public class TrackService implements ITrackService {
     @Override
     public void hydrateTrack(Track track) {
         try {
-            JSONObject json = ApiClient.getRequest(PATH + track.getId());
+            JSONObject json = ApiClient.getRequest(PATH + track.getId()).get();
             track.setAlbum(new Album(
                     json.getJSONObject("album").getString("name"),
                     json.getJSONObject("album").getString("uri"),
@@ -32,7 +32,7 @@ public class TrackService implements ITrackService {
             track.setDiscNumber(json.getInt("disc_number"));
             track.setDurationMs(json.getInt("duration_ms"));
             track.setTrackNumber(json.getInt("track_number"));
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

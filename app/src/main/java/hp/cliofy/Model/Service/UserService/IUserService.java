@@ -1,11 +1,12 @@
 package hp.cliofy.Model.Service.UserService;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Playlist;
 
 public interface IUserService {
-    List<Playlist> getPlaylistsList();
-    List<Artist> getTopArtists();
+    CompletableFuture<List<Playlist>> getPlaylistsList();
+    CompletableFuture<List<Artist>> getTopArtists();
 }

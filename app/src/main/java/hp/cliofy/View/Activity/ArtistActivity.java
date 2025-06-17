@@ -3,6 +3,7 @@ package hp.cliofy.View.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hp.cliofy.Model.Service.FacadeService;
@@ -52,6 +54,11 @@ public class ArtistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist);
 
+        loadLoadingIcon(R.id.loading_top_tracks);
+        loadLoadingIcon(R.id.loading_albums);
+        loadLoadingIcon(R.id.loading_singles);
+        loadLoadingIcon(R.id.loading_compilations);
+
         facadeService = FacadeService.getInstance();
 
         Bundle bundle = getIntent().getExtras();
@@ -68,40 +75,79 @@ public class ArtistActivity extends AppCompatActivity {
         informations.setText(String.format("%s\n%d followers\nGenres: %s", artist.getName(), artist.getFollowersTotal(), artist.getGenres()));
 
         topTracksListView = findViewById(R.id.topTracksListView);
-        topTracksList = facadeService.getArtistTopTracks(artist);
-
-        // TODO enlever l'hydratation des activités
-        for (Track track : topTracksList) {
-            facadeService.hydrateTrack(track);
-        }
-
+        topTracksList = new ArrayList<>();
         TrackArtistAdapter topTracksAdapter = new TrackArtistAdapter(this, topTracksList);
         topTracksListView.setAdapter(topTracksAdapter);
-        refreshListViewHeight(topTracksListView);
         topTracksListView.setOnItemClickListener(this::playTrack);
 
         albumsListView = findViewById(R.id.albumsListView);
-        albumsList = facadeService.getArtistAlbums(artist, "album");
+        albumsList = new ArrayList<>();
         AlbumAdapter albumsAdapter = new AlbumAdapter(this, albumsList);
         albumsListView.setAdapter(albumsAdapter);
-        refreshListViewHeight(albumsListView);
         albumsListView.setOnItemClickListener(this::openAlbumActivity);
 
         singlesListView = findViewById(R.id.singlesListView);
-        singlesList = facadeService.getArtistAlbums(artist, "single");
+        singlesList = new ArrayList<>();
         AlbumAdapter singlesAdapter = new AlbumAdapter(this, singlesList);
         singlesListView.setAdapter(singlesAdapter);
-        refreshListViewHeight(singlesListView);
         singlesListView.setOnItemClickListener(this::openSingleActivity);
 
         compilationsListView = findViewById(R.id.compilationsListView);
-        compilationsList = facadeService.getArtistAlbums(artist, "compilation");
+        compilationsList = new ArrayList<>();
         AlbumAdapter compilationsAdapter = new AlbumAdapter(this, compilationsList);
         compilationsListView.setAdapter(compilationsAdapter);
-        refreshListViewHeight(compilationsListView);
         compilationsListView.setOnItemClickListener(this::openCompilationActivity);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
+
+        facadeService.getArtistTopTracks(artist).thenAccept(result -> {
+            runOnUiThread(() -> {
+                for (Track track : result) {
+                    facadeService.hydrateTrack(track);
+                    topTracksList.add(track);
+                }
+                topTracksAdapter.notifyDataSetChanged();
+                refreshListViewHeight(topTracksListView);
+                hideView(R.id.loading_top_tracks);
+            });
+        });
+
+        facadeService.getArtistAlbums(artist, "album").thenAccept(result -> {
+            runOnUiThread(() -> {
+                albumsList.addAll(result);
+                albumsAdapter.notifyDataSetChanged();
+                refreshListViewHeight(albumsListView);
+                hideView(R.id.loading_albums);
+            });
+        });
+
+        facadeService.getArtistAlbums(artist, "single").thenAccept(result -> {
+            runOnUiThread(() -> {
+                singlesList.addAll(result);
+                singlesAdapter.notifyDataSetChanged();
+                refreshListViewHeight(singlesListView);
+                hideView(R.id.loading_singles);
+            });
+        });
+
+        facadeService.getArtistAlbums(artist, "compilation").thenAccept(result -> {
+            runOnUiThread(() -> {
+                compilationsList.addAll(result);
+                compilationsAdapter.notifyDataSetChanged();
+                refreshListViewHeight(compilationsListView);
+                hideView(R.id.loading_compilations);
+            });
+        });
+    }
+
+    private void loadLoadingIcon(@IdRes int id) {
+        ImageView loading = findViewById(id);
+        Glide.with(this).asGif().load("file:///android_asset/loading.gif").into(loading);
+    }
+
+    private void hideView(@IdRes int id) {
+        View view = findViewById(id);
+        view.setVisibility(View.GONE);
     }
 
     private void playTrack(AdapterView<?> adapterView, View view, int i, long l) {
