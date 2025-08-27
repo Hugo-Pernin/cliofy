@@ -70,14 +70,14 @@ public class FacadeService extends Observable {
      * @param context TODO expliquer
      */
     public void connect(Context context) {
-        authenticationService.requestAuthorizationCode(context);
+        authenticationService.connect(context);
     }
 
     /**
      * Connects the Android SDK DAO
      * @param context TODO expliquer
      */
-    private void connectAndroidSDKDAO(Context context) {
+    public void connectAndroidSDKDAO(Context context) {
         androidSDKDAO.connect(context, this);
     }
 
@@ -89,8 +89,13 @@ public class FacadeService extends Observable {
         authenticationService.requestAccessToken(authorizationCode);
         accessToken = authenticationService.getAccessToken();
         ApiClient.setAccessToken(accessToken);
-        // Peut être enlevé
-        connectAndroidSDKDAO(context); // TODO why here?
+    }
+
+    /**
+     * Refreshes the access token
+     */
+    public void refreshAccessToken() {
+        authenticationService.refreshAccessToken();
     }
 
     /**

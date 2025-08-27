@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements IObserver, IObser
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
                 facadeService.requestAccessToken(authorizationCode, this);
+                facadeService.connectAndroidSDKDAO(this);
 
                 facadeService.getPlaylistsList().thenAccept(result -> {
                     runOnUiThread(() -> {
@@ -232,6 +233,27 @@ public class MainActivity extends AppCompatActivity implements IObserver, IObser
 
     @Override
     public void accessTokenRefreshed() {
+        facadeService.connectAndroidSDKDAO(this);
+
+        Toast.makeText(this, "Jeton rafraichi", Toast.LENGTH_SHORT).show();
+
+        facadeService.getPlaylistsList().thenAccept(result -> {
+            runOnUiThread(() -> {
+                playlistsList.addAll(result);
+                playlistsAdapter.notifyDataSetChanged();
+                refreshListViewHeight(playlistsListView);
+                hideView(R.id.loading_playlists);
+            });
+        });
+
+        facadeService.getTopArtists().thenAccept(result -> {
+            runOnUiThread(() -> {
+                topArtistsList.addAll(result);
+                topArtistsAdapter.notifyDataSetChanged();
+                refreshListViewHeight(topArtistsListView);
+                hideView(R.id.loading_artists);
+            });
+        });
     }
 
     /**

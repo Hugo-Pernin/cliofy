@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,7 +58,16 @@ public class AuthenticationService extends ObservableAuthentication implements I
     }
 
     @Override
-    public void requestAuthorizationCode(Context context) {
+    public void connect(Context context) {
+        if (getRefreshToken() == null) {
+            requestAuthorizationCode(context);
+        }
+        else {
+            refreshAccessToken();
+        }
+    }
+
+    private void requestAuthorizationCode(Context context) {
         codeVerifier = generateRandomString(64);
         final byte[] HASHED = sha256(codeVerifier);
         final String CODE_CHALLENGE = base64encode(HASHED);
@@ -163,6 +174,71 @@ public class AuthenticationService extends ObservableAuthentication implements I
 
         try {
             thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void refreshAccessToken() {
+        Thread thread = new Thread(() -> {
+            try {
+                HttpURLConnection urlConnection = null;
+                try {
+                    String postData = "grant_type=refresh_token" +
+                            "&refresh_token=" + URLEncoder.encode(this.getRefreshToken(), "UTF-8") +
+                            "&client_id=" + URLEncoder.encode(CLIENT_ID, "UTF-8");
+
+                    URL url = new URL("https://accounts.spotify.com/api/token");
+
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setDoInput(true);
+                    urlConnection.setChunkedStreamingMode(0);
+
+                    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+                    writer.write(postData);
+                    writer.flush();
+                    writer.close();
+
+                    int code = urlConnection.getResponseCode();
+                    if (code !=  200) {
+                        throw new IOException("Invalid response from server: " + code);
+                    }
+
+                    /*BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    reader.close();
+                    Log.d("API", "Response body: " + response.toString());*/
+
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    JSONObject json = new JSONObject(rd.readLine());
+                    ApiClient.setAccessToken(json.get("access_token").toString());
+                    this.setRefreshToken(json.get("refresh_token").toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+            this.notifyAccessTokenRefreshed();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
