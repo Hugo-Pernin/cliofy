@@ -59,7 +59,7 @@ public class PlaylistActivity extends AppCompatActivity {
         tracksListView.setOnItemClickListener(this::playTrack);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode
 
-        facadeService = FacadeService.getInstance();
+        facadeService = FacadeService.getInstance(this);
 
         facadeService.getPlaylistTracks(playlist).thenAccept(result -> {
             runOnUiThread(() -> {

@@ -59,7 +59,7 @@ public class ArtistActivity extends AppCompatActivity {
         loadLoadingIcon(R.id.loading_singles);
         loadLoadingIcon(R.id.loading_compilations);
 
-        facadeService = FacadeService.getInstance();
+        facadeService = FacadeService.getInstance(this);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

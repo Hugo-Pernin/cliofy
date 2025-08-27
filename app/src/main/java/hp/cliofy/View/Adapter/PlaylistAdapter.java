@@ -39,7 +39,7 @@ public class PlaylistAdapter extends ArrayAdapter<Playlist> {
 
         Glide.with(this.getContext()).load(playlist.getImageUrl()).into(playlistCover);
         playlistName.setText(playlist.getName());
-        playButton.setOnClickListener((View view) -> FacadeService.getInstance().play(playlist.getUri()));
+        playButton.setOnClickListener((View view) -> FacadeService.getInstance(getContext()).play(playlist.getUri()));
 
         return convertView;
     }

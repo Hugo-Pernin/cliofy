@@ -1,5 +1,7 @@
 package hp.cliofy.Model.Service.ServiceFactory;
 
+import android.content.Context;
+
 import hp.cliofy.Model.Service.AlbumService.AlbumService;
 import hp.cliofy.Model.Service.AlbumService.IAlbumService;
 import hp.cliofy.Model.Service.ArtistService.ArtistService;
@@ -27,8 +29,8 @@ public class ServiceFactory implements IServiceFactory {
     }
 
     @Override
-    public IAuthenticationService createAuthenticationService() {
-        return new AuthenticationService();
+    public IAuthenticationService createAuthenticationService(Context context) {
+        return new AuthenticationService(context);
     }
 
     @Override

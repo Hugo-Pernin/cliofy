@@ -34,7 +34,7 @@ public class TrackAlbumAdapter extends ArrayAdapter<Track> {
         Button queueButton = convertView.findViewById(R.id.queueButton);
 
         trackName.setText(track.getName());
-        queueButton.setOnClickListener((View view) -> FacadeService.getInstance().addItemToQueue(track.getUri()));
+        queueButton.setOnClickListener((View view) -> FacadeService.getInstance(getContext()).addItemToQueue(track.getUri()));
 
         return convertView;
     }

@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         topArtistsListView.setAdapter(topArtistsAdapter);
         topArtistsListView.setOnItemClickListener(this::openArtistActivity);
 
-        facadeService = FacadeService.getInstance();
+        facadeService = FacadeService.getInstance(this);
         facadeService.addObserver(this);
         facadeService.connect(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Prevent sleep mode

@@ -42,9 +42,9 @@ public class FacadeService extends Observable {
     /**
      * Creates a facade service
      */
-    private FacadeService() {
+    private FacadeService(Context context) {
         serviceFactory = new ServiceFactory(); // TODO respecter D
-        authenticationService = serviceFactory.createAuthenticationService();
+        authenticationService = serviceFactory.createAuthenticationService(context);
         androidSDKDAO = new AndroidSDKDAO();
     }
 
@@ -52,9 +52,9 @@ public class FacadeService extends Observable {
      * Gets the singleton instance
      * @return the singleton instance
      */
-    public static FacadeService getInstance() {
+    public static FacadeService getInstance(Context context) {
         if (instance == null) {
-            instance = new FacadeService();
+            instance = new FacadeService(context);
         }
         return instance;
     }

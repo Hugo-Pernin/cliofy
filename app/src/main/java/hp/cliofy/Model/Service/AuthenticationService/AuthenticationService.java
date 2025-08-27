@@ -33,6 +33,11 @@ public class AuthenticationService implements IAuthenticationService {
     private String authorizationCode;
     private String accessToken;
     private String refreshToken;
+    private Context context;
+
+    public AuthenticationService(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void requestAuthorizationCode(Context context) {
