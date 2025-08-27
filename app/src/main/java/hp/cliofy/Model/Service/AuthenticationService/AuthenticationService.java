@@ -25,7 +25,11 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthenticationService implements IAuthenticationService {
+import hp.cliofy.Model.ObserverAuthentication.IObserverAuthentication;
+import hp.cliofy.Model.ObserverAuthentication.ObservableAuthentication;
+import hp.cliofy.Model.Service.ApiClient;
+
+public class AuthenticationService extends ObservableAuthentication implements IAuthenticationService {
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
     private final String REDIRECT_URI = "com.hp.cliofy://callback";
     private final String SCOPE = "user-read-private user-read-email playlist-read-private user-top-read user-modify-playback-state";
@@ -37,6 +41,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     public AuthenticationService(Context context) {
         this.context = context;
+        this.addObserver((IObserverAuthentication) context); // Cast pas bien
     }
 
     @Override

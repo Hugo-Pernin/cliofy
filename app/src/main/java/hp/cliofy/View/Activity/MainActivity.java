@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import hp.cliofy.Model.ObserverAuthentication.IObserverAuthentication;
 import hp.cliofy.Model.Service.FacadeService;
 import hp.cliofy.Model.Item.Artist;
 import hp.cliofy.Model.Item.Playlist;
@@ -40,7 +41,7 @@ import hp.cliofy.View.Adapter.PlaylistAdapter;
 /**
  * Main activity of the project
  */
-public class MainActivity extends AppCompatActivity implements IObserver {
+public class MainActivity extends AppCompatActivity implements IObserver, IObserverAuthentication {
     /**
      * General DAO communicating with the different Spotify APIs
      */
@@ -227,6 +228,10 @@ public class MainActivity extends AppCompatActivity implements IObserver {
         else {
             Toast.makeText(this, "Erreur lors de la connexion à l'API : mauvaise redirection", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void accessTokenRefreshed() {
     }
 
     /**
