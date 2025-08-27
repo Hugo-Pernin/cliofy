@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements IObserver, IObser
             String authorizationCode = uri.getQueryParameter("code");
             if (authorizationCode != null) {
                 Toast.makeText(this, "Connecté à l'API", Toast.LENGTH_SHORT).show();
-                facadeService.storeAuthorizationCode(authorizationCode, this);
+                facadeService.requestAccessToken(authorizationCode, this);
 
                 facadeService.getPlaylistsList().thenAccept(result -> {
                     runOnUiThread(() -> {

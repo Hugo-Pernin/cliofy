@@ -35,7 +35,6 @@ public class AuthenticationService extends ObservableAuthentication implements I
     private final String REDIRECT_URI = "com.hp.cliofy://callback";
     private final String SCOPE = "user-read-private user-read-email playlist-read-private user-top-read user-modify-playback-state";
     private String codeVerifier;
-    private String authorizationCode;
     private String accessToken;
     private Context context;
 
@@ -114,12 +113,7 @@ public class AuthenticationService extends ObservableAuthentication implements I
     }
 
     @Override
-    public void storeAuthorizationCode(String authorizationCode) {
-        this.authorizationCode = authorizationCode;
-        requestAccessToken(); // TODO why here?
-    }
-
-    private void requestAccessToken() {
+    public void requestAccessToken(String authorizationCode) {
         Thread thread = new Thread(() -> {
             try {
                 HttpURLConnection urlConnection = null;

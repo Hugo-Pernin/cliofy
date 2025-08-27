@@ -4,6 +4,6 @@ import android.content.Context;
 
 public interface IAuthenticationService {
     void requestAuthorizationCode(Context context);
-    void storeAuthorizationCode(String authorizationCode);
+    void requestAccessToken(String authorizationCode);
     String getAccessToken();
 }

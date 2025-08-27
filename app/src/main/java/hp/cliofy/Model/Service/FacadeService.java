@@ -79,8 +79,8 @@ public class FacadeService extends Observable {
      * Stores the authorization code and then connects the Android SDK DAO
      * @param authorizationCode authorization code to store
      */
-    public void storeAuthorizationCode(String authorizationCode, Context context) {
-        authenticationService.storeAuthorizationCode(authorizationCode);
+    public void requestAccessToken(String authorizationCode, Context context) {
+        authenticationService.requestAccessToken(authorizationCode);
         accessToken = authenticationService.getAccessToken();
         ApiClient.setAccessToken(accessToken);
         // Peut être enlevé
