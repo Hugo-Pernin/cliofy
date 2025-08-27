@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 
 import org.json.JSONObject;
@@ -36,12 +37,23 @@ public class AuthenticationService extends ObservableAuthentication implements I
     private String codeVerifier;
     private String authorizationCode;
     private String accessToken;
-    private String refreshToken;
     private Context context;
 
     public AuthenticationService(Context context) {
         this.context = context;
         this.addObserver((IObserverAuthentication) context); // Cast pas bien
+    }
+
+    private String getRefreshToken() {
+        SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        return prefs.getString("refreshToken", null);
+    }
+
+    private void setRefreshToken(String refreshToken) {
+        SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("refreshToken", refreshToken);
+        editor.apply();
     }
 
     @Override
@@ -140,7 +152,7 @@ public class AuthenticationService extends ObservableAuthentication implements I
                     BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     JSONObject json = new JSONObject(rd.readLine());
                     accessToken = json.get("access_token").toString();
-                    refreshToken = json.get("refresh_token").toString();
+                    this.setRefreshToken(json.get("refresh_token").toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
