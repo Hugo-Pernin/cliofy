@@ -4,9 +4,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -19,7 +17,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,6 +28,7 @@ import java.util.Map;
 import hp.cliofy.Model.ObserverAuthentication.IObserverAuthentication;
 import hp.cliofy.Model.ObserverAuthentication.ObservableAuthentication;
 import hp.cliofy.Model.Service.ApiClient;
+import hp.cliofy.Model.SharedPreferencesManager;
 
 public class AuthenticationService extends ObservableAuthentication implements IAuthenticationService {
     private final String CLIENT_ID = "6837605e645041288ee6e45da7e46ff6";
@@ -45,21 +43,9 @@ public class AuthenticationService extends ObservableAuthentication implements I
         this.addObserver((IObserverAuthentication) context); // Cast pas bien
     }
 
-    private String getRefreshToken() {
-        SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        return prefs.getString("refreshToken", null);
-    }
-
-    private void setRefreshToken(String refreshToken) {
-        SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("refreshToken", refreshToken);
-        editor.apply();
-    }
-
     @Override
     public void connect(Context context) {
-        if (getRefreshToken() == null) {
+        if (SharedPreferencesManager.getInstance().getRefreshToken() == null) {
             requestAuthorizationCode(context);
         }
         else {
@@ -157,7 +143,7 @@ public class AuthenticationService extends ObservableAuthentication implements I
                     BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     JSONObject json = new JSONObject(rd.readLine());
                     accessToken = json.get("access_token").toString();
-                    this.setRefreshToken(json.get("refresh_token").toString());
+                    SharedPreferencesManager.getInstance().setRefreshToken(json.get("refresh_token").toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -186,13 +172,13 @@ public class AuthenticationService extends ObservableAuthentication implements I
                 HttpURLConnection urlConnection = null;
                 try {
                     String postData = "grant_type=refresh_token" +
-                            "&refresh_token=" + URLEncoder.encode(this.getRefreshToken(), "UTF-8") +
-                            "&client_id=" + URLEncoder.encode(CLIENT_ID, "UTF-8");
+                            "&refresh_token=" + SharedPreferencesManager.getInstance().getRefreshToken() +
+                            "&client_id=" + CLIENT_ID;
 
                     URL url = new URL("https://accounts.spotify.com/api/token");
 
                     urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setDoOutput(true);
                     urlConnection.setDoInput(true);
@@ -221,7 +207,7 @@ public class AuthenticationService extends ObservableAuthentication implements I
                     BufferedReader rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     JSONObject json = new JSONObject(rd.readLine());
                     ApiClient.setAccessToken(json.get("access_token").toString());
-                    this.setRefreshToken(json.get("refresh_token").toString());
+                    SharedPreferencesManager.getInstance().setRefreshToken(json.get("refresh_token").toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
